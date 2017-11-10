@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Apps by host</title>
+  <style media="screen">
+    * {
+      box-sizing: border-box;
+    }
+
+    html , body {
+      background-color: #F6F4F6;
+      margin: 0;
+      padding: 0;
+      color: #000000;
+      font-size: 16px;
+      font-family: Helvetica;
+    }
+
+    .container {
+      max-width: 840px;
+      padding: 30px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .header {
+      margin-bottom: 1.875rem;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: baseline;
+      align-items: baseline;
+    }
+
+    .header-item {
+      white-space: nowrap;
+    }
+
+    .header-item-ellipsis {
+      -ms-flex: 1;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .header strong {
+      color: #000000;
+      font-size: 2.188rem;
+      line-height: 1.2;
+    }
+
+    .header .header-item-ellipsis span {
+      color: #000000;
+      font-size: 1.125rem;
+      line-height: 1.2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
+      margin-left: 0.5625em;
+    }
+
+    .header .header-item span {
+      color: #000000;
+      font-size: 1rem;
+      margin-left: 1.25em;
+      display: block;
+    }
+
+    @media screen and (max-width: 435px) {
+      .header {
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -ms-flex-align: start;
+        align-items: flex-start;
+      }
+
+      .header .header-item-ellipsis {
+        display: none;
+      }
+
+      .header .header-item span {
+        margin-left: 0;
+        margin-top: 20px;
+      }
+    }
+
+    @keyframes placeholder {
+      0%{
+        background-position: -468px 0
+      }
+      100%{
+        background-position: 468px 0
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-item"><strong>Apps by Host</strong></div>
+      <div class="header-item-ellipsis"><span>for user averylongemailadress@companyname.com</span></div>
+      <div class="header-item"><span id="ToggleListStyle"></span></div>
+    </div>
+    <div class="hostList">
+      <div id="appsList"></div>
+    </div>
+  </div>
+  <script src="./dist/bundle.js" charset="utf-8"></script>
+</body>
+</html>
