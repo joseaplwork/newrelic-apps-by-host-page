@@ -5,6 +5,7 @@ export const initState = {
   show: true,
   wasFetched: false,
   data: [],
+  isEmpty: false,
   error: null,
 };
 
@@ -12,21 +13,21 @@ export default function (state = initState, action) {
   const { type, payload, error } = action;
 
   switch (type) {
-    case gat.GET_JSON_DATA_REQUEST:
-      return Object.assign({}, state, {
-        wasFetched: false,
-      });
-    case gat.SET_LIST_DATA:
+    case gat.SET_LIST_DATA: {
+      const { data = [] } = payload;
+
       return Object.assign({}, state, {
         wasFetched: true,
-        data: payload.data,
+        isEmpty: !data.length,
+        data,
         error: null,
       });
+    }
     case gat.GET_JSON_DATA_ERROR:
       return Object.assign({}, state, {
         wasFetched: true,
         data: [],
-        error,
+        error: !!error,
       });
     case tlsActionTypes.TOGGLE_STYLE:
       return Object.assign({}, state, {

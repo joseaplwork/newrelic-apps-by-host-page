@@ -1,13 +1,14 @@
+import render from 'helpers/render';
 import { template, styles } from './component';
 import actions from './actions';
 import reducer, { initState } from './reducer';
 import { COMPONENT_NAME } from './constants';
 
 export default {
-  component: state => ({
+  render: (state, selector) => render({
     name: COMPONENT_NAME,
-    selector: '#appsList',
     template: template(state),
+    selector,
     styles,
   }),
   actions,

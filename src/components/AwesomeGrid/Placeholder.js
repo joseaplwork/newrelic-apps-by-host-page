@@ -42,7 +42,7 @@ const shape = `
 `;
 
 const placeholder = `
-  <div id="AwesomeGrid">
+  <div class="AwesomeGridScope">
     ${shape}
     ${shape}
     ${shape}

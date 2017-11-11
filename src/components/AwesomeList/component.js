@@ -1,26 +1,30 @@
+import EmptyView from 'components/EmptyView';
+import KiteIcon from 'components/Icons/Kite';
+import ErrorIcon from 'components/Icons/Error';
+
 import Placeholder from './Placeholder';
 
 export const styles = `
-  #AwesomeList {
+  .AwesomeListScope {
     display: -ms-flexbox;
     display: flex;
     -ms-flex-flow: column;
     flex-flow: column;
   }
 
-  .awesomelist-card,
-  .awesomelist-placeholder-card {
+  .AwesomeListScope .awesomelist-card,
+  .AwesomeListScope .awesomelist-placeholder-card {
     padding: 1.875rem;
     background-color: white;
     margin: 0.9375rem 0;
   }
 
-  .awesomelist-placeholder-card {
+  .AwesomeListScope .awesomelist-placeholder-card {
     min-width: 375px;
   }
 
-  .awesomelist-app,
-  .awesomelist-placeholder-app {
+  .AwesomeListScope .awesomelist-app,
+  .AwesomeListScope .awesomelist-placeholder-app {
     margin-bottom: 20px;
     display: -ms-flexbox;
     display: flex;
@@ -28,27 +32,27 @@ export const styles = `
     align-items: flex-start;
   }
 
-  .awesomelist-app:last-child,
-  .awesomelist-placeholder-app:last-child {
+  .AwesomeListScope .awesomelist-app:last-child,
+  .AwesomeListScope .awesomelist-placeholder-app:last-child {
     margin-bottom: 0;
   }
 
-  .awesomelist-host,
-  .awesomelist-placeholder-host {
+  .AwesomeListScope .awesomelist-host,
+  .AwesomeListScope .awesomelist-placeholder-host {
     margin-bottom: 1.438rem;
     font-size: 1rem;
     font-weight: bold;
     line-height: 1.2;
   }
 
-  .awesomelist-placeholder-host {
+  .AwesomeListScope .awesomelist-placeholder-host {
     height: 15px;
     background: #f1f1f1;
     max-width: 50%;
   }
 
-  .awesomelist-app-apdex,
-  .awesomelist-placeholder-app-apdex {
+  .AwesomeListScope .awesomelist-app-apdex,
+  .AwesomeListScope .awesomelist-placeholder-app-apdex {
     display: inline-block;
     margin-right: 20px;
     color: #4a4a4a;
@@ -56,27 +60,27 @@ export const styles = `
     line-height: 1.5;
   }
 
-  .awesomelist-placeholder-app-apdex {
+  .AwesomeListScope .awesomelist-placeholder-app-apdex {
     height: 15px;
     width: 15px;
     background: #f1f1f1;
   }
 
-  .awesomelist-app-name,
-  .awesomelist-placeholder-app-name {
+  .AwesomeListScope .awesomelist-app-name,
+  .AwesomeListScope .awesomelist-placeholder-app-name {
     display: inline-block;
     color: #4a4a4a;
     font-size: 1rem;
     line-height: 1.2;
   }
 
-  .awesomelist-placeholder-app-name {
+  .AwesomeListScope .awesomelist-placeholder-app-name {
     height: 15px;
     background: #f1f1f1;
     width: 60%;
   }
 
-  .awesomelist-animate {
+  .AwesomeListScope .awesomelist-animate {
     animation-duration: 1s;
     animation-fill-mode: forwards;
     animation-iteration-count: infinite;
@@ -89,13 +93,31 @@ export const styles = `
   }
 `;
 
-export const template = ({ show, wasFetched, data }) => {
+export const template = (state) => {
+  const {
+    show, wasFetched, data, isEmpty, error,
+  } = state;
+
   if (!show) return null;
 
   if (!wasFetched) return Placeholder;
 
+  if (error) {
+    return EmptyView.render({
+      icon: ErrorIcon,
+      message: 'Oh snap... Something went terribly wrong 😩',
+    });
+  }
+
+  if (isEmpty) {
+    return EmptyView.render({
+      icon: KiteIcon,
+      message: 'Woops... There is not data to show 😕',
+    });
+  }
+
   return `
-    <div id="AwesomeList">
+    <div class="AwesomeListScope">
       ${data.map(hostApplication => `
         <div class="awesomelist-card">
           <div class="awesomelist-host">${hostApplication.host}</div>

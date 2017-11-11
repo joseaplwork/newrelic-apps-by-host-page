@@ -152,26 +152,6 @@ var createClass = function () {
   };
 }();
 
-
-
-
-
-
-
-var _extends = Object.assign || function (target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i];
-
-    for (var key in source) {
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
-      }
-    }
-  }
-
-  return target;
-};
-
 (function e(t, n, r) {
   function s(o, u) {
     if (!n[o]) {
@@ -7752,88 +7732,6 @@ var NewRelicHostApps = function () {
   return NewRelicHostApps;
 }();
 
-function render(component) {
-  var name = component.name,
-      styles = component.styles,
-      selector = component.selector,
-      template = component.template,
-      listeners = component.listeners;
-
-  /* TEMPLATE */
-
-  var node = document.querySelector(selector);
-
-  if (template) {
-    node.innerHTML = template;
-  }
-
-  /* STYLES */
-  var style = document.querySelector('style[data-ref="' + name + '"]');
-
-  if (!style) {
-    var styleNode = document.createElement('style');
-
-    styleNode.setAttribute('data-ref', name);
-    styleNode.appendChild(document.createTextNode(styles));
-
-    document.head.appendChild(styleNode);
-  }
-
-  /* LISTENERS */
-  if (listeners) {
-    listeners.forEach(function (_ref) {
-      var target = _ref.target,
-          type = _ref.type,
-          callback = _ref.callback;
-
-      var element = document.querySelector('[data-evt="' + target + '"]');
-      element.addEventListener(type, callback);
-    });
-  }
-
-  return node;
-}
-
-function updateView(component) {
-  var selector = component.selector,
-      template = component.template,
-      listeners = component.listeners;
-
-  /* REMOVE PREVIOUS LISTENERS */
-
-  if (listeners) {
-    listeners.forEach(function (_ref2) {
-      var target = _ref2.target,
-          type = _ref2.type,
-          callback = _ref2.callback;
-
-      var element = document.querySelector('[data-evt="' + target + '"]');
-      element.removeEventListener(type, callback);
-    });
-  }
-
-  /* TEMPLATE */
-  var node = document.querySelector(selector);
-
-  if (template) {
-    node.innerHTML = template;
-  }
-
-  /* ADD NEW LISTENERS */
-  if (listeners) {
-    listeners.forEach(function (_ref3) {
-      var target = _ref3.target,
-          type = _ref3.type,
-          callback = _ref3.callback;
-
-      var element = document.querySelector('[data-evt="' + target + '"]');
-      element.addEventListener(type, callback);
-    });
-  }
-
-  return node;
-}
-
 function request(method, url) {
   return new Promise(function (resolve, reject) {
     var req = new XMLHttpRequest();
@@ -7885,32 +7783,146 @@ function jsonDataError(error) {
   };
 }
 
+function _shouldRenderStyles(id, textStyles) {
+  var style = document.querySelector('style[data-ref="' + id + '"]');
+
+  if (!style) {
+    var styleNode = document.createElement('style');
+
+    styleNode.setAttribute('data-ref', id);
+    styleNode.appendChild(document.createTextNode(textStyles));
+
+    document.head.appendChild(styleNode);
+  }
+}
+
+function _updateListeners(listeners) {
+  /* LISTENERS */
+  if (listeners) {
+    listeners.forEach(function (_ref) {
+      var target = _ref.target,
+          type = _ref.type,
+          callback = _ref.callback;
+
+      var element = document.querySelector('[data-evt="' + target + '"]');
+
+      element.removeEventListener(type, callback);
+      element.addEventListener(type, callback);
+    });
+  }
+}
+
+function renderView(component) {
+  var name = component.name,
+      styles = component.styles,
+      selector = component.selector,
+      template = component.template,
+      listeners = component.listeners;
+
+  /* TEMPLATE */
+
+  var node = document.querySelector(selector);
+
+  node.innerHTML = template || '';
+
+  /* STYLES */
+  _shouldRenderStyles(name, styles);
+
+  /* LISTENERS */
+  _updateListeners(listeners);
+
+  return node;
+}
+
+function returnView(component) {
+  var name = component.name,
+      styles = component.styles,
+      template = component.template;
+
+  /* STYLES */
+
+  _shouldRenderStyles(name, styles);
+
+  return template;
+}
+
+function render(component) {
+  var selector = component.selector;
+
+
+  return selector ? renderView(component) : returnView(component);
+}
+
+var styles$1 = "\n  .EmptyViewScope {\n    margin: 100px auto;\n    width: 250px;\n    height: 340px;\n    text-align: center;\n  }\n\n  .EmptyViewScope > svg {\n    width: 100%;\n    display: inline-block;\n  }\n\n  .EmptyViewScope p {\n    font-size: 1.5rem;\n    font-weight: lighter;\n  }\n\n  .EmptyViewScope.animate {\n    animation-duration: 250ms;\n    animation-name: zoomIn;\n    animation-timing-function: cubic-bezier(.01,.01,.48,1.27);\n  }\n\n  @-ms-keyframes zoomIn {\n    from {\n      opacity: 0;\n      -ms-transform: translate3d(0, -25px, 0) scale(0.9);\n      transform: translate3d(0, -25px, 0) scale(0.9);\n    }\n  }\n\n  @keyframes zoomIn {\n    from {\n      opacity: 0;\n      transform: translate3d(0, -25px, 0) scale(0.9);\n    }\n  }\n";
+
+var template$1 = function template(_ref) {
+  var icon = _ref.icon,
+      message = _ref.message;
+  return "\n  <div class=\"EmptyViewScope animate\">\n    " + icon + "\n    <p>" + message + "</p>\n  </div>\n";
+};
+
+var COMPONENT_NAME = 'EmtpyView';
+
+var EmptyView = {
+  render: function render$$1(state, selector) {
+    return render({
+      name: COMPONENT_NAME,
+      template: template$1(state),
+      selector: selector,
+      styles: styles$1
+    });
+  }
+};
+
+var template$2 = "\n  <svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 444.46 444.46\" style=\"enable-background:new 0 0 444.46 444.46;\" xml:space=\"preserve\">\n    <g>\n      <path style=\"fill:#EFEFEF;\" d=\"M142.076,150.159c-3.116-14.683-16.277-25.339-31.296-25.339c-6.001,0-11.842,1.663-16.898,4.825\n        C88.19,116.386,75.197,107.82,60.78,107.82c-19.851,0-36,16.149-36,36c0,9.41,3.206,16,3.206,16h116.141L142.076,150.159z\"/>\n      <path style=\"fill:#EFEFEF;\" d=\"M227.976,50.339C224.86,35.657,211.699,25,196.68,25c-6.002,0-11.844,1.664-16.899,4.825\n        C174.09,16.566,161.097,8,146.68,8c-19.851,0-36,16.149-36,36c0,9.48,3.167,16,3.167,16h116.178L227.976,50.339z\"/>\n      <path style=\"fill:#EFEFEF;\" d=\"M418.976,304.339C415.86,289.657,402.699,279,387.68,279c-6.002,0-11.844,1.664-16.899,4.825\n        C365.09,270.566,352.097,262,337.68,262c-19.851,0-36,16.149-36,36c0,9.064,3.167,16,3.167,16h116.178L418.976,304.339z\"/>\n      <polygon style=\"fill:#3E81C8;\" points=\"330.077,113.531 397.93,181.383 397.93,45.664   \"/>\n      <polygon style=\"fill:#3E81C8;\" points=\"330.069,113.526 221.145,222.463 397.936,181.381   \"/>\n      <polygon style=\"fill:#F8A805;\" points=\"262.216,45.669 330.069,113.524 397.937,45.669   \"/>\n      <polygon style=\"fill:#F8A805;\" points=\"262.219,45.664 221.136,222.467 330.073,113.53   \"/>\n      <g>\n        <path d=\"M110.78,116.82c-4.65,0-9.23,0.8-13.54,2.35c-8.09-11.97-21.66-19.35-36.46-19.35c-24.26,0-44,19.74-44,44\n          c0,6.87,1.54,13.45,4.59,19.56c1.35,2.72,4.12,4.44,7.16,4.44h114.11c4.13,0,7.59-3.15,7.96-7.28c0.12-1.25,0.18-2.51,0.18-3.72\n          C150.78,134.76,132.83,116.82,110.78,116.82z M33.94,151.82c-0.77-2.57-1.16-5.25-1.16-8c0-15.44,12.56-28,28-28\n          c11.21,0,21.32,6.66,25.75,16.98c0.92,2.14,2.73,3.78,4.96,4.47c2.23,0.7,4.65,0.39,6.63-0.85c3.77-2.35,8.15-3.6,12.66-3.6\n          c11.52,0,21.17,8.16,23.47,19L33.94,151.82L33.94,151.82z\"/>\n        <path d=\"M196.68,17c-4.65,0-9.23,0.8-13.54,2.35C175.05,7.38,161.48,0,146.68,0c-24.26,0-44,19.74-44,44\n          c0,6.87,1.54,13.45,4.59,19.56c1.35,2.72,4.12,4.44,7.16,4.44h114.11c4.13,0,7.59-3.16,7.96-7.28c0.12-1.26,0.18-2.51,0.18-3.72\n          C236.68,34.94,218.73,17,196.68,17z M119.83,52c-0.76-2.58-1.15-5.25-1.15-8c0-15.44,12.56-28,28-28\n          c11.21,0,21.32,6.66,25.75,16.98c0.92,2.14,2.73,3.78,4.96,4.47c2.23,0.7,4.65,0.39,6.63-0.85c3.77-2.35,8.15-3.6,12.66-3.6\n          c11.52,0,21.17,8.16,23.47,19C220.15,52,119.83,52,119.83,52z\"/>\n        <path d=\"M387.68,271c-4.65,0-9.23,0.8-13.54,2.35c-8.09-11.97-21.66-19.35-36.46-19.35c-24.26,0-44,19.74-44,44\n          c0,6.87,1.54,13.45,4.59,19.56c1.35,2.72,4.12,4.44,7.16,4.44h114.11c4.13,0,7.59-3.16,7.96-7.28c0.12-1.26,0.18-2.51,0.18-3.72\n          C427.68,288.94,409.73,271,387.68,271z M310.83,306c-0.76-2.58-1.15-5.25-1.15-8c0-15.44,12.56-28,28-28\n          c11.21,0,21.32,6.66,25.75,16.98c0.92,2.14,2.73,3.78,4.96,4.47c2.23,0.7,4.65,0.39,6.63-0.85c3.77-2.35,8.15-3.6,12.66-3.6\n          c11.52,0,21.17,8.16,23.47,19H310.83z\"/>\n        <path d=\"M397.93,37.67H262.22c-3.73,0-6.96,2.56-7.8,6.19l-41.07,176.79c-0.01,0.03-0.14,0.69-0.17,0.99v0.03\n          c-0.03,0.26-0.04,0.53-0.04,0.79v41.76c0,9.51-7.74,17.24-17.25,17.24h-35.51c-18.33,0-33.24,14.92-33.24,33.25v0.51\n          c0,18.33,14.91,33.24,33.24,33.24h29.51c9.51,0,17.25,7.74,17.25,17.25v3.51c0,9.51-7.74,17.24-17.25,17.24h-44.51\n          c-18.33,0-33.24,14.92-33.24,33.25v16.75c0,4.42,3.58,8,8,8s8-3.58,8-8v-16.75c0-9.51,7.73-17.25,17.24-17.25h44.51\n          c18.33,0,33.25-14.91,33.25-33.24v-3.51c0-18.33-14.92-33.25-33.25-33.25h-29.51c-9.51,0-17.24-7.73-17.24-17.24v-0.51\n          c0-9.51,7.73-17.25,17.24-17.25h35.51c18.33,0,33.25-14.91,33.25-33.24v-35.4l170.6-39.64c3.63-0.84,6.19-4.07,6.19-7.79V45.67\n          C405.93,41.25,402.35,37.67,397.93,37.67z M378.62,53.67l-48.55,48.54l-48.54-48.54H378.62z M266.75,61.51l52.01,52.02l-83.5,83.5\n          L266.75,61.51z M246.58,208.34l83.49-83.5l52.02,52.01L246.58,208.34z M389.93,162.07l-48.54-48.54l48.54-48.55V162.07z\"/>\n      </g>\n    </g>\n  </svg>\n";
+
+var template$3 = "\n  <svg version=\"1.1\" id=\"Capa_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 512 512\" style=\"enable-background:new 0 0 512 512;\" xml:space=\"preserve\">\n    <g>\n      <path style=\"fill:#FF5A5A;\" d=\"M394.72,234.408L293.39,57.945c-3.624-6.508-8.979-12.151-15.864-16.161\n        C257.1,29.891,230.94,36.897,219.11,57.435L117.485,234.408l0.076,0.041l-0.076,0.127L17.921,407.96\n        C12.933,415,10,423.618,10,432.924c0,23.796,19.186,43.084,42.855,43.084h203.247H459.35v-0.184\n        c7.223,0.01,14.545-1.83,21.258-5.707c20.427-11.801,27.473-38.027,15.735-58.565L395.976,236.766\n        C395.585,235.967,395.165,235.186,394.72,234.408L394.72,234.408z M276.012,366.005c0,11.046-8.954,20.001-20.001,20.001\n        c-11.045,0-19.999-8.955-19.999-20.001c0-11.047,8.953-19.999,19.999-19.999C267.057,346.007,276.012,354.958,276.012,366.005\n        L276.012,366.005z M256.011,306.007L256.011,306.007L256.011,306.007z M256.013,186L256.013,186L256.013,186z M276.012,206.001\n        v80.005c0,10.998-8.997,20.001-20.001,20.001c-11,0-19.999-9.002-19.999-20.001v-80.005c0-11.004,8.998-20.001,20.001-20.001\n        C267.014,186,276.012,194.996,276.012,206.001z\"/>\n      <g>\n        <path style=\"fill:#FF8C5A;\" d=\"M276.012,286.006v-80.005c0-11.004-8.997-20.001-19.999-20.001\n          c-11.002,0-20.001,8.996-20.001,20.001v80.005c0,10.998,8.998,20.001,19.999,20.001\n          C267.014,306.007,276.012,297.004,276.012,286.006z\"/>\n        <circle style=\"fill:#FF8C5A;\" cx=\"256.011\" cy=\"366.005\" r=\"20\"/>\n      </g>\n    </g>\n    <path d=\"M256.013,316.007c16.542,0,29.999-13.46,29.999-30.001v-80.005c0-16.544-13.459-30.001-30.001-30.001\n      c-16.542,0-29.999,13.458-29.999,30.001v80.005C226.012,302.548,239.47,316.007,256.013,316.007z M246.013,206.001\n      c0-5.514,4.486-10,10-10c5.513,0,9.998,4.486,9.998,10v80.005c0,5.514-4.485,10-9.998,10h-0.002c-5.514,0-9.998-4.486-9.998-10\n      V206.001z\"/>\n    <path d=\"M256.013,336.002c-16.543,0-30.001,13.46-30.001,30.003c0,16.544,13.459,30.001,30.001,30.001s30.001-13.458,30.001-30.001\n      C286.014,349.462,272.556,336.002,256.013,336.002z M256.013,376.006c-5.514,0-10-4.486-10-10c0-5.516,4.486-10.002,10-10.002\n      s10,4.486,10,10.002C266.013,371.52,261.527,376.006,256.013,376.006z\"/>\n    <path d=\"M505.016,406.574L404.798,232.047c-0.434-0.865-0.904-1.742-1.406-2.617L302.091,53.018\n      c-4.603-8.24-11.355-15.112-19.534-19.876c-8.033-4.678-17.167-7.15-26.411-7.15c-18.792,0-36.304,10.135-45.708,26.464\n      L108.814,229.43c-0.211,0.367-0.397,0.748-0.557,1.137L9.474,402.587C3.273,411.511,0,421.989,0,432.924\n      c0,29.271,23.711,53.084,52.855,53.084h406.495c0.728,0,1.437-0.076,2.119-0.225c8.452-0.338,16.758-2.744,24.141-7.008\n      C510.76,464.247,519.471,431.864,505.016,406.574z M475.606,461.457c-4.947,2.857-10.549,4.367-16.243,4.367\n      c-0.004,0-0.008,0-0.013,0c-0.646,0-1.283,0.063-1.907,0.184H52.855c-18.116,0-32.854-14.841-32.854-33.083\n      c0-6.938,2.102-13.571,6.079-19.183c0.184-0.258,0.354-0.527,0.513-0.803l99.523-173.31l0.032-0.053\n      c0.249-0.418,0.465-0.852,0.648-1.299L227.776,62.426c5.839-10.137,16.71-16.435,28.37-16.435c5.713,0,11.365,1.533,16.346,4.432\n      c5.097,2.969,9.302,7.252,12.161,12.388c0.021,0.039,0.043,0.076,0.065,0.115l101.324,176.453c0.348,0.607,0.671,1.213,0.961,1.801\n      c0.094,0.191,0.193,0.381,0.301,0.564l100.357,174.772C496.659,432.258,491.25,452.419,475.606,461.457z\"/>\n    <path d=\"M112.857,426.008h-0.235c-5.523,0-10,4.477-10,10c0,5.522,4.477,10,10,10h0.235c5.523,0,10-4.478,10-10\n      C122.857,430.485,118.38,426.008,112.857,426.008z\"/>\n    <path d=\"M83.891,426.008H52.855c-5.523,0-10,4.477-10,10c0,5.522,4.477,10,10,10H83.89c5.523,0,10-4.478,10-10\n      C93.891,430.485,89.414,426.008,83.891,426.008z\"/>\n    <path d=\"M399.402,426.008h-0.236c-5.523,0-10,4.477-10,10c0,5.522,4.477,10,10,10h0.236c5.522,0,10-4.478,10-10\n      C409.403,430.485,404.924,426.008,399.402,426.008z\"/>\n    <path d=\"M459.17,426.008h-31.038c-5.523,0-10,4.477-10,10c0,5.522,4.477,10,10,10h31.038c5.523,0,10-4.478,10-10\n      C469.17,430.485,464.693,426.008,459.17,426.008z\"/>\n  </svg>\n";
+
 var shape = "\n  <div class=\"awesomegrid-card\">\n    <div class=\"awesomegrid-placeholder-host awesomegrid-animate\"></div>\n    <div class=\"awesomegrid-apps\">\n      <div class=\"awesomegrid-app\">\n        <div class=\"awesomegrid-placeholder-app-apdex awesomegrid-animate\"></div>\n        <div class=\"awesomegrid-app-name\">\n          <div class=\"awesomegrid-placeholder-app-name1 awesomegrid-animate\"></div>\n          <div class=\"awesomegrid-placeholder-app-name2 awesomegrid-animate\"></div>\n        </div>\n      </div>\n      <div class=\"awesomegrid-app\">\n        <div class=\"awesomegrid-placeholder-app-apdex awesomegrid-animate\"></div>\n        <div class=\"awesomegrid-app-name\">\n          <div class=\"awesomegrid-placeholder-app-name1 awesomegrid-animate\"></div>\n          <div class=\"awesomegrid-placeholder-app-name2 awesomegrid-animate\"></div>\n        </div>\n      </div>\n      <div class=\"awesomegrid-app\">\n        <div class=\"awesomegrid-placeholder-app-apdex awesomegrid-animate\"></div>\n        <div class=\"awesomegrid-app-name\">\n          <div class=\"awesomegrid-placeholder-app-name1 awesomegrid-animate\"></div>\n          <div class=\"awesomegrid-placeholder-app-name2 awesomegrid-animate\"></div>\n        </div>\n      </div>\n      <div class=\"awesomegrid-app\">\n        <div class=\"awesomegrid-placeholder-app-apdex awesomegrid-animate\"></div>\n        <div class=\"awesomegrid-app-name\">\n          <div class=\"awesomegrid-placeholder-app-name1 awesomegrid-animate\"></div>\n          <div class=\"awesomegrid-placeholder-app-name2 awesomegrid-animate\"></div>\n        </div>\n      </div>\n      <div class=\"awesomegrid-app\">\n        <div class=\"awesomegrid-placeholder-app-apdex awesomegrid-animate\"></div>\n        <div class=\"awesomegrid-app-name\">\n          <div class=\"awesomegrid-placeholder-app-name1 awesomegrid-animate\"></div>\n          <div class=\"awesomegrid-placeholder-app-name2 awesomegrid-animate\"></div>\n        </div>\n      </div>\n    </div>\n  </div>\n";
 
-var placeholder = "\n  <div id=\"AwesomeGrid\">\n    " + shape + "\n    " + shape + "\n    " + shape + "\n    " + shape + "\n  </div>\n";
+var placeholder = "\n  <div class=\"AwesomeGridScope\">\n    " + shape + "\n    " + shape + "\n    " + shape + "\n    " + shape + "\n  </div>\n";
 
-var styles = '\n  #AwesomeGrid {\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-wrap: wrap;\n    flex-wrap: wrap;\n    -ms-flex-pack: justify;\n    justify-content: space-between;\n  }\n\n  .awesomegrid-card {\n    padding: 1.875rem;\n    max-width: 375px;\n    width: 100%;\n    background-color: white;\n    margin: 0.9375rem 0;\n  }\n\n  .awesomegrid-card:nth-child(even) {\n    margin-left: 30px;\n  }\n\n  .awesomegrid-app {\n    margin-bottom: 1.25rem;\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-align: start;\n    align-items: flex-start;\n  }\n\n  .awesomegrid-app:last-child {\n    margin-bottom: 0;\n  }\n\n  .awesomegrid-placeholder-host,\n  .awesomegrid-host {\n    margin-bottom: 1.438rem;\n    font-size: 1rem;\n    font-weight: bold;\n    line-height: 1.2;\n  }\n\n  .awesomegrid-placeholder-host {\n    background: #f1f1f1;\n    height: 15px;\n    max-width: 80%;\n  }\n\n  .awesomegrid-placeholder-app-apdex,\n  .awesomegrid-app-apdex {\n    color: #4a4a4a;\n    font-size: 0.8125rem;\n    line-height: 1.5;\n    display: inline-block;\n    margin-right: 1.25rem;\n  }\n\n  .awesomegrid-placeholder-app-apdex {\n    background: #f1f1f1;\n    height: 15px;\n    width: 15px;\n  }\n\n  .awesomegrid-app-name {\n    color: #4a4a4a;\n    font-size: 1rem;\n    line-height: 1.2;\n    -ms-flex: 1;\n    flex: 1;\n  }\n\n  .awesomegrid-placeholder-app-name1,\n  .awesomegrid-placeholder-app-name2 {\n    background: #f1f1f1;\n    display: inline-block;\n  }\n\n  .awesomegrid-placeholder-app-name1 {\n    height: 15px;\n    width: 90%;\n  }\n\n  .awesomegrid-placeholder-app-name2 {\n    height: 15px;\n    width: 60%;\n  }\n\n  @media screen and (max-width: 840px) {\n    #AwesomeGrid {\n      -ms-flex-align: center;\n      align-items: center;\n      -ms-flex-direction: column;\n      flex-direction: column;\n    }\n\n    .awesomegrid-card:nth-child(even) {\n      margin-left: 0;\n    }\n  }\n\n  .awesomegrid-animate {\n    animation-duration: 1s;\n    animation-fill-mode: forwards;\n    animation-iteration-count: infinite;\n    animation-name: placeholder;\n    animation-timing-function: linear;\n    background: #f1f1f1;\n    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);\n    background-size: 800px 104px;\n    position: relative;\n  }\n';
+var styles = '\n  .AwesomeGridScope {\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-wrap: wrap;\n    flex-wrap: wrap;\n    -ms-flex-pack: justify;\n    justify-content: space-between;\n  }\n\n  .AwesomeGridScope .awesomegrid-card {\n    padding: 1.875rem;\n    max-width: 375px;\n    width: 100%;\n    background-color: white;\n    margin: 0.9375rem 0;\n  }\n\n  .AwesomeGridScope .awesomegrid-card:nth-child(even) {\n    margin-left: 30px;\n  }\n\n  .AwesomeGridScope .awesomegrid-app {\n    margin-bottom: 1.25rem;\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-align: start;\n    align-items: flex-start;\n  }\n\n  .AwesomeGridScope .awesomegrid-app:last-child {\n    margin-bottom: 0;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-host,\n  .AwesomeGridScope .awesomegrid-host {\n    margin-bottom: 1.438rem;\n    font-size: 1rem;\n    font-weight: bold;\n    line-height: 1.2;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-host {\n    background: #f1f1f1;\n    height: 15px;\n    max-width: 80%;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-app-apdex,\n  .AwesomeGridScope .awesomegrid-app-apdex {\n    color: #4a4a4a;\n    font-size: 0.8125rem;\n    line-height: 1.5;\n    display: inline-block;\n    margin-right: 1.25rem;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-app-apdex {\n    background: #f1f1f1;\n    height: 15px;\n    width: 15px;\n  }\n\n  .AwesomeGridScope .awesomegrid-app-name {\n    color: #4a4a4a;\n    font-size: 1rem;\n    line-height: 1.2;\n    -ms-flex: 1;\n    flex: 1;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-app-name1,\n  .AwesomeGridScope .awesomegrid-placeholder-app-name2 {\n    background: #f1f1f1;\n    display: inline-block;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-app-name1 {\n    height: 15px;\n    width: 90%;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-app-name2 {\n    height: 15px;\n    width: 60%;\n  }\n\n  @media screen and (max-width: 840px) {\n    .AwesomeGridScope {\n      -ms-flex-align: center;\n      align-items: center;\n      -ms-flex-direction: column;\n      flex-direction: column;\n    }\n\n    .AwesomeGridScope .awesomegrid-card:nth-child(even) {\n      margin-left: 0;\n    }\n  }\n\n  .AwesomeGridScope .awesomegrid-animate {\n    animation-duration: 1s;\n    animation-fill-mode: forwards;\n    animation-iteration-count: infinite;\n    animation-name: placeholder;\n    animation-timing-function: linear;\n    background: #f1f1f1;\n    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);\n    background-size: 800px 104px;\n    position: relative;\n  }\n';
 
-var template = function template(_ref) {
-  var show = _ref.show,
-      wasFetched = _ref.wasFetched,
-      data = _ref.data;
+var template = function template(state) {
+  var show = state.show,
+      wasFetched = state.wasFetched,
+      data = state.data,
+      isEmpty = state.isEmpty,
+      error = state.error;
+
 
   if (!show) return null;
 
   if (!wasFetched) return placeholder;
 
-  return '\n    <div id="AwesomeGrid">\n      ' + data.map(function (hostApplication) {
+  if (error) {
+    return EmptyView.render({
+      icon: template$3,
+      message: 'Oh snap... Something went terribly wrong 😩'
+    });
+  }
+
+  if (isEmpty) {
+    return EmptyView.render({
+      icon: template$2,
+      message: 'Woops... There is not data to show 😕'
+    });
+  }
+
+  return '\n    <div class="AwesomeGridScope">\n      ' + data.map(function (hostApplication) {
     return '\n        <div class="awesomegrid-card">\n          <div class="awesomegrid-host">' + hostApplication.host + '</div>\n          <div class="awesomegrid-apps">\n            ' + hostApplication.applications.map(function (app) {
       return '\n              <div class="awesomegrid-app">\n                <div class="awesomegrid-app-apdex">' + app.apdex + '</div>\n                <div class="awesomegrid-app-name">' + app.name + '</div>\n              </div>\n            ';
     }).join('') + '\n          </div>\n        </div>\n      ';
   }).join('') + '\n    </div>\n  ';
 };
 
-var COMPONENT_NAME = 'AwesomeGrid';
+var COMPONENT_NAME$1 = 'AwesomeGrid';
+
+
 
 var actionTypes = {
-  ON_CLICK_APPLICATION: COMPONENT_NAME + '/ON_CLICK_APPLICATION'
+  ON_CLICK_APPLICATION: COMPONENT_NAME$1 + '/ON_CLICK_APPLICATION'
 };
 
 function onClickApplication() {
@@ -7923,17 +7935,18 @@ var actions = {
   onClickApplication: onClickApplication
 };
 
-var COMPONENT_NAME$1 = 'ToggleListStyle';
-var INPUT_EVT_REFERENCE = COMPONENT_NAME$1 + '-ToggleListInput';
+var COMPONENT_NAME$2 = 'ToggleListStyle';
+var INPUT_EVT_REFERENCE = COMPONENT_NAME$2 + '-ToggleListInput';
 
 var actionTypes$1 = {
-  TOGGLE_STYLE: COMPONENT_NAME$1 + '/TOGGLE_STYLE'
+  TOGGLE_STYLE: COMPONENT_NAME$2 + '/TOGGLE_STYLE'
 };
 
 var initState = {
   show: true,
   wasFetched: false,
   data: [],
+  isEmpty: false,
   error: null
 };
 
@@ -7946,24 +7959,27 @@ var reducer = function () {
 
 
   switch (type) {
-    case globalActionTypes.GET_JSON_DATA_REQUEST:
-      return _extends({}, state, {
-        wasFetched: false
-      });
     case globalActionTypes.SET_LIST_DATA:
-      return _extends({}, state, {
-        wasFetched: true,
-        data: payload.data,
-        error: null
-      });
+      {
+        var _payload$data = payload.data,
+            data = _payload$data === undefined ? [] : _payload$data;
+
+
+        return Object.assign({}, state, {
+          wasFetched: true,
+          isEmpty: !data.length,
+          data: data,
+          error: null
+        });
+      }
     case globalActionTypes.GET_JSON_DATA_ERROR:
-      return _extends({}, state, {
+      return Object.assign({}, state, {
         wasFetched: true,
         data: [],
-        error: error
+        error: !!error
       });
     case actionTypes$1.TOGGLE_STYLE:
-      return _extends({}, state, {
+      return Object.assign({}, state, {
         show: !payload.isSelected
       });
     default:
@@ -7972,13 +7988,13 @@ var reducer = function () {
 };
 
 var AwesomeGrid = {
-  component: function component(state) {
-    return {
-      name: COMPONENT_NAME,
-      selector: '#appsList',
+  render: function render$$1(state, selector) {
+    return render({
+      name: COMPONENT_NAME$1,
       template: template(state),
+      selector: selector,
       styles: styles
-    };
+    });
   },
   actions: actions,
   reducer: reducer,
@@ -7987,30 +8003,47 @@ var AwesomeGrid = {
 
 var shape$1 = "\n  <div class=\"awesomelist-placeholder-card\">\n    <div class=\"awesomelist-placeholder-host awesomelist-animate\"></div>\n    <div class=\"awesomelist-placeholder-apps\">\n      <div class=\"awesomelist-placeholder-app\">\n        <div class=\"awesomelist-placeholder-app-apdex awesomelist-animate\"></div>\n        <div class=\"awesomelist-placeholder-app-name awesomelist-animate\"></div>\n      </div>\n      <div class=\"awesomelist-placeholder-app\">\n        <div class=\"awesomelist-placeholder-app-apdex awesomelist-animate\"></div>\n        <div class=\"awesomelist-placeholder-app-name awesomelist-animate\"></div>\n      </div>\n      <div class=\"awesomelist-placeholder-app\">\n        <div class=\"awesomelist-placeholder-app-apdex awesomelist-animate\"></div>\n        <div class=\"awesomelist-placeholder-app-name awesomelist-animate\"></div>\n      </div>\n      <div class=\"awesomelist-placeholder-app\">\n        <div class=\"awesomelist-placeholder-app-apdex awesomelist-animate\"></div>\n        <div class=\"awesomelist-placeholder-app-name awesomelist-animate\"></div>\n      </div>\n      <div class=\"awesomelist-placeholder-app\">\n        <div class=\"awesomelist-placeholder-app-apdex awesomelist-animate\"></div>\n        <div class=\"awesomelist-placeholder-app-name awesomelist-animate\"></div>\n      </div>\n    </div>\n  </div>\n";
 
-var placeholder$1 = "\n  <div id=\"AwesomeList\">\n    " + shape$1 + "\n    " + shape$1 + "\n    " + shape$1 + "\n    " + shape$1 + "\n  </div>\n";
+var placeholder$1 = "\n  <div class=\"AwesomeListScope\">\n    " + shape$1 + "\n    " + shape$1 + "\n    " + shape$1 + "\n    " + shape$1 + "\n  </div>\n";
 
-var styles$1 = '\n  #AwesomeList {\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-flow: column;\n    flex-flow: column;\n  }\n\n  .awesomelist-card,\n  .awesomelist-placeholder-card {\n    padding: 1.875rem;\n    background-color: white;\n    margin: 0.9375rem 0;\n  }\n\n  .awesomelist-placeholder-card {\n    min-width: 375px;\n  }\n\n  .awesomelist-app,\n  .awesomelist-placeholder-app {\n    margin-bottom: 20px;\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-align: start;\n    align-items: flex-start;\n  }\n\n  .awesomelist-app:last-child,\n  .awesomelist-placeholder-app:last-child {\n    margin-bottom: 0;\n  }\n\n  .awesomelist-host,\n  .awesomelist-placeholder-host {\n    margin-bottom: 1.438rem;\n    font-size: 1rem;\n    font-weight: bold;\n    line-height: 1.2;\n  }\n\n  .awesomelist-placeholder-host {\n    height: 15px;\n    background: #f1f1f1;\n    max-width: 50%;\n  }\n\n  .awesomelist-app-apdex,\n  .awesomelist-placeholder-app-apdex {\n    display: inline-block;\n    margin-right: 20px;\n    color: #4a4a4a;\n    font-size: 0.8125rem;\n    line-height: 1.5;\n  }\n\n  .awesomelist-placeholder-app-apdex {\n    height: 15px;\n    width: 15px;\n    background: #f1f1f1;\n  }\n\n  .awesomelist-app-name,\n  .awesomelist-placeholder-app-name {\n    display: inline-block;\n    color: #4a4a4a;\n    font-size: 1rem;\n    line-height: 1.2;\n  }\n\n  .awesomelist-placeholder-app-name {\n    height: 15px;\n    background: #f1f1f1;\n    width: 60%;\n  }\n\n  .awesomelist-animate {\n    animation-duration: 1s;\n    animation-fill-mode: forwards;\n    animation-iteration-count: infinite;\n    animation-name: placeholder;\n    animation-timing-function: linear;\n    background: #f1f1f1;\n    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);\n    background-size: 1000px 104px;\n    position: relative;\n  }\n';
+var styles$2 = '\n  .AwesomeListScope {\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-flow: column;\n    flex-flow: column;\n  }\n\n  .AwesomeListScope .awesomelist-card,\n  .AwesomeListScope .awesomelist-placeholder-card {\n    padding: 1.875rem;\n    background-color: white;\n    margin: 0.9375rem 0;\n  }\n\n  .AwesomeListScope .awesomelist-placeholder-card {\n    min-width: 375px;\n  }\n\n  .AwesomeListScope .awesomelist-app,\n  .AwesomeListScope .awesomelist-placeholder-app {\n    margin-bottom: 20px;\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-align: start;\n    align-items: flex-start;\n  }\n\n  .AwesomeListScope .awesomelist-app:last-child,\n  .AwesomeListScope .awesomelist-placeholder-app:last-child {\n    margin-bottom: 0;\n  }\n\n  .AwesomeListScope .awesomelist-host,\n  .AwesomeListScope .awesomelist-placeholder-host {\n    margin-bottom: 1.438rem;\n    font-size: 1rem;\n    font-weight: bold;\n    line-height: 1.2;\n  }\n\n  .AwesomeListScope .awesomelist-placeholder-host {\n    height: 15px;\n    background: #f1f1f1;\n    max-width: 50%;\n  }\n\n  .AwesomeListScope .awesomelist-app-apdex,\n  .AwesomeListScope .awesomelist-placeholder-app-apdex {\n    display: inline-block;\n    margin-right: 20px;\n    color: #4a4a4a;\n    font-size: 0.8125rem;\n    line-height: 1.5;\n  }\n\n  .AwesomeListScope .awesomelist-placeholder-app-apdex {\n    height: 15px;\n    width: 15px;\n    background: #f1f1f1;\n  }\n\n  .AwesomeListScope .awesomelist-app-name,\n  .AwesomeListScope .awesomelist-placeholder-app-name {\n    display: inline-block;\n    color: #4a4a4a;\n    font-size: 1rem;\n    line-height: 1.2;\n  }\n\n  .AwesomeListScope .awesomelist-placeholder-app-name {\n    height: 15px;\n    background: #f1f1f1;\n    width: 60%;\n  }\n\n  .AwesomeListScope .awesomelist-animate {\n    animation-duration: 1s;\n    animation-fill-mode: forwards;\n    animation-iteration-count: infinite;\n    animation-name: placeholder;\n    animation-timing-function: linear;\n    background: #f1f1f1;\n    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);\n    background-size: 1000px 104px;\n    position: relative;\n  }\n';
 
-var template$1 = function template(_ref) {
-  var show = _ref.show,
-      wasFetched = _ref.wasFetched,
-      data = _ref.data;
+var template$4 = function template(state) {
+  var show = state.show,
+      wasFetched = state.wasFetched,
+      data = state.data,
+      isEmpty = state.isEmpty,
+      error = state.error;
+
 
   if (!show) return null;
 
   if (!wasFetched) return placeholder$1;
 
-  return '\n    <div id="AwesomeList">\n      ' + data.map(function (hostApplication) {
+  if (error) {
+    return EmptyView.render({
+      icon: template$3,
+      message: 'Oh snap... Something went terribly wrong 😩'
+    });
+  }
+
+  if (isEmpty) {
+    return EmptyView.render({
+      icon: template$2,
+      message: 'Woops... There is not data to show 😕'
+    });
+  }
+
+  return '\n    <div class="AwesomeListScope">\n      ' + data.map(function (hostApplication) {
     return '\n        <div class="awesomelist-card">\n          <div class="awesomelist-host">' + hostApplication.host + '</div>\n          <div class="awesomelist-apps">\n            ' + hostApplication.applications.map(function (app) {
       return '\n              <div class="awesomelist-app">\n                <div class="awesomelist-app-apdex">' + app.apdex + '</div>\n                <div class="awesomelist-app-name">' + app.name + '</div>\n              </div>\n            ';
     }).join('') + '\n          </div>\n        </div>\n      ';
   }).join('') + '\n    </div>\n  ';
 };
 
-var COMPONENT_NAME$2 = 'AwesomeList';
+var COMPONENT_NAME$3 = 'AwesomeList';
 
 var actionTypes$2 = {
-  ON_CLICK_APPLICATION: COMPONENT_NAME$2 + '/ON_CLICK_APPLICATION'
+  ON_CLICK_APPLICATION: COMPONENT_NAME$3 + '/ON_CLICK_APPLICATION'
 };
 
 function onClickApplication$1() {
@@ -8027,6 +8060,7 @@ var initState$1 = {
   show: false,
   wasFetched: false,
   data: [],
+  isEmpty: false,
   error: null
 };
 
@@ -8039,24 +8073,27 @@ var reducer$1 = function () {
 
 
   switch (type) {
-    case globalActionTypes.GET_JSON_DATA_REQUEST:
-      return _extends({}, state, {
-        wasFetched: false
-      });
     case globalActionTypes.SET_LIST_DATA:
-      return _extends({}, state, {
-        wasFetched: true,
-        data: payload.data,
-        error: null
-      });
+      {
+        var _payload$data = payload.data,
+            data = _payload$data === undefined ? [] : _payload$data;
+
+
+        return Object.assign({}, state, {
+          wasFetched: true,
+          isEmpty: !data.length,
+          data: data,
+          error: null
+        });
+      }
     case globalActionTypes.GET_JSON_DATA_ERROR:
-      return _extends({}, state, {
-        wasFetched: false,
+      return Object.assign({}, state, {
+        wasFetched: true,
         data: [],
-        error: error
+        error: !!error
       });
     case actionTypes$1.TOGGLE_STYLE:
-      return _extends({}, state, {
+      return Object.assign({}, state, {
         show: payload.isSelected
       });
     default:
@@ -8065,13 +8102,13 @@ var reducer$1 = function () {
 };
 
 var AwesomeList = {
-  component: function component(state) {
-    return {
-      name: COMPONENT_NAME$2,
-      selector: '#appsList',
-      template: template$1(state),
-      styles: styles$1
-    };
+  render: function render$$1(state, selector) {
+    return render({
+      name: COMPONENT_NAME$3,
+      template: template$4(state),
+      selector: selector,
+      styles: styles$2
+    });
   },
   actions: actions$1,
   reducer: reducer$1,
@@ -8089,7 +8126,7 @@ var actions$2 = {
   toggleStyle: toggleStyle
 };
 
-var styles$2 = '\n  input {\n    margin: 0;\n  }\n';
+var styles$3 = '\n  .ToggleListStyleScope .inputToggleList {\n    width: 16px;\n    height: 16px;\n    display: inline-block;\n    border: 2px solid #e0e0e0;\n    position: relative;\n    border-radius: 3px;\n    margin: 0;\n    vertical-align: top;\n    background: white;\n  }\n\n  .ToggleListStyleScope .inputToggleList input {\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    margin: 0;\n    opacity: 0;\n    outline: none;\n  }\n\n  .ToggleListStyleScope .inputToggleList i {\n    position: absolute;\n    width: 8px;\n    height: 8px;\n    top: 2px;\n    left: 2px;\n    margin: 0;\n    opacity: 0;\n    border-radius: 2px;\n    background: #4caf50;\n  }\n\n  .ToggleListStyleScope .inputToggleList input:checked + i {\n    opacity: 1;\n  }\n';
 
 function onChange(evt) {
   var element = evt.currentTarget;
@@ -8105,9 +8142,9 @@ var listeners = function listeners() {
   }];
 };
 
-var template$2 = function template(_ref) {
+var template$5 = function template(_ref) {
   var showAsList = _ref.showAsList;
-  return '\n  <input id="inputToggleList" ' + (showAsList && 'checked') + ' data-evt="' + INPUT_EVT_REFERENCE + '" type="checkbox">\n  <label for="inputToggleList">' + (showAsList ? 'Show as an awesome grid' : 'Show as list') + '</label>\n';
+  return '\n  <div class="ToggleListStyleScope">\n    <p class="inputToggleList">\n      <input id="inputToggleListRef" ' + (showAsList && 'checked' || '') + ' data-evt="' + INPUT_EVT_REFERENCE + '" type="checkbox">\n      <i></i>\n    </p>\n    <label for="inputToggleListRef">' + (showAsList ? 'Show as an awesome grid' : 'Show as list') + '</label>\n  </div>\n';
 };
 
 var initState$2 = {
@@ -8124,7 +8161,7 @@ var reducer$2 = function () {
   switch (type) {
     case actionTypes$1.TOGGLE_STYLE:
       {
-        var newState = _extends({}, state, {
+        var newState = Object.assign({}, state, {
           showAsList: payload.isSelected
         });
 
@@ -8136,21 +8173,20 @@ var reducer$2 = function () {
 };
 
 var ToggleListStyle = {
-  component: function component(state, scope) {
-    return {
-      name: COMPONENT_NAME$1,
-      selector: '#ToggleListStyle',
-      template: template$2(state),
-      listeners: listeners(scope),
-      styles: styles$2
-    };
+  render: function render$$1(state, selector) {
+    return render({
+      name: COMPONENT_NAME$2,
+      template: template$5(state),
+      listeners: listeners(),
+      selector: selector,
+      styles: styles$3
+    });
   },
   actions: actions$2,
   reducer: reducer$2,
   initState: initState$2
 };
 
-// import NewRelicHostApps from 'newrelic-host-applications';
 var AppsByHostSite = function () {
   function AppsByHostSite() {
     classCallCheck(this, AppsByHostSite);
@@ -8177,36 +8213,27 @@ var AppsByHostSite = function () {
 
       this.store = Object.assign({}, { toggleListStyleState: newToggleListStyleState }, { awesomeGridState: newAwesomeGridState }, { awesomeListState: newAwesomeListState });
 
-      this.updateViews();
+      this.renderViews();
     }
   }, {
-    key: 'updateViews',
-    value: function updateViews() {
+    key: 'renderViews',
+    value: function renderViews() {
       var _store2 = this.store,
           toggleListStyleState = _store2.toggleListStyleState,
           awesomeGridState = _store2.awesomeGridState,
           awesomeListState = _store2.awesomeListState;
 
 
-      updateView(ToggleListStyle.component(toggleListStyleState));
-      updateView(AwesomeGrid.component(awesomeGridState));
-      updateView(AwesomeList.component(awesomeListState));
+      ToggleListStyle.render(toggleListStyleState, '#ToggleListStyleEntry');
+      AwesomeGrid.render(awesomeGridState, '#AwesomeGridEntry');
+      AwesomeList.render(awesomeListState, '#AwesomeListEntry');
     }
   }, {
     key: 'init',
     value: function init() {
       var _this = this;
 
-      var _store3 = this.store,
-          toggleListStyleState = _store3.toggleListStyleState,
-          awesomeGridState = _store3.awesomeGridState,
-          awesomeListState = _store3.awesomeListState;
-
-
-      render(ToggleListStyle.component(toggleListStyleState));
-      render(AwesomeGrid.component(awesomeGridState));
-      render(AwesomeList.component(awesomeListState));
-
+      this.renderViews();
       var request$$1 = getRequest(JSON_DATA_URL);
 
       request$$1.then(function (data) {

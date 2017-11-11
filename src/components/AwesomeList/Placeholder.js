@@ -27,7 +27,7 @@ const shape = `
 `;
 
 const placeholder = `
-  <div id="AwesomeList">
+  <div class="AwesomeListScope">
     ${shape}
     ${shape}
     ${shape}

@@ -1,7 +1,11 @@
+import EmptyView from 'components/EmptyView';
+import KiteIcon from 'components/Icons/Kite';
+import ErrorIcon from 'components/Icons/Error';
+
 import Placeholder from './Placeholder';
 
 export const styles = `
-  #AwesomeGrid {
+  .AwesomeGridScope {
     display: -ms-flexbox;
     display: flex;
     -ms-flex-wrap: wrap;
@@ -10,7 +14,7 @@ export const styles = `
     justify-content: space-between;
   }
 
-  .awesomegrid-card {
+  .AwesomeGridScope .awesomegrid-card {
     padding: 1.875rem;
     max-width: 375px;
     width: 100%;
@@ -18,11 +22,11 @@ export const styles = `
     margin: 0.9375rem 0;
   }
 
-  .awesomegrid-card:nth-child(even) {
+  .AwesomeGridScope .awesomegrid-card:nth-child(even) {
     margin-left: 30px;
   }
 
-  .awesomegrid-app {
+  .AwesomeGridScope .awesomegrid-app {
     margin-bottom: 1.25rem;
     display: -ms-flexbox;
     display: flex;
@@ -30,26 +34,26 @@ export const styles = `
     align-items: flex-start;
   }
 
-  .awesomegrid-app:last-child {
+  .AwesomeGridScope .awesomegrid-app:last-child {
     margin-bottom: 0;
   }
 
-  .awesomegrid-placeholder-host,
-  .awesomegrid-host {
+  .AwesomeGridScope .awesomegrid-placeholder-host,
+  .AwesomeGridScope .awesomegrid-host {
     margin-bottom: 1.438rem;
     font-size: 1rem;
     font-weight: bold;
     line-height: 1.2;
   }
 
-  .awesomegrid-placeholder-host {
+  .AwesomeGridScope .awesomegrid-placeholder-host {
     background: #f1f1f1;
     height: 15px;
     max-width: 80%;
   }
 
-  .awesomegrid-placeholder-app-apdex,
-  .awesomegrid-app-apdex {
+  .AwesomeGridScope .awesomegrid-placeholder-app-apdex,
+  .AwesomeGridScope .awesomegrid-app-apdex {
     color: #4a4a4a;
     font-size: 0.8125rem;
     line-height: 1.5;
@@ -57,13 +61,13 @@ export const styles = `
     margin-right: 1.25rem;
   }
 
-  .awesomegrid-placeholder-app-apdex {
+  .AwesomeGridScope .awesomegrid-placeholder-app-apdex {
     background: #f1f1f1;
     height: 15px;
     width: 15px;
   }
 
-  .awesomegrid-app-name {
+  .AwesomeGridScope .awesomegrid-app-name {
     color: #4a4a4a;
     font-size: 1rem;
     line-height: 1.2;
@@ -71,36 +75,36 @@ export const styles = `
     flex: 1;
   }
 
-  .awesomegrid-placeholder-app-name1,
-  .awesomegrid-placeholder-app-name2 {
+  .AwesomeGridScope .awesomegrid-placeholder-app-name1,
+  .AwesomeGridScope .awesomegrid-placeholder-app-name2 {
     background: #f1f1f1;
     display: inline-block;
   }
 
-  .awesomegrid-placeholder-app-name1 {
+  .AwesomeGridScope .awesomegrid-placeholder-app-name1 {
     height: 15px;
     width: 90%;
   }
 
-  .awesomegrid-placeholder-app-name2 {
+  .AwesomeGridScope .awesomegrid-placeholder-app-name2 {
     height: 15px;
     width: 60%;
   }
 
   @media screen and (max-width: 840px) {
-    #AwesomeGrid {
+    .AwesomeGridScope {
       -ms-flex-align: center;
       align-items: center;
       -ms-flex-direction: column;
       flex-direction: column;
     }
 
-    .awesomegrid-card:nth-child(even) {
+    .AwesomeGridScope .awesomegrid-card:nth-child(even) {
       margin-left: 0;
     }
   }
 
-  .awesomegrid-animate {
+  .AwesomeGridScope .awesomegrid-animate {
     animation-duration: 1s;
     animation-fill-mode: forwards;
     animation-iteration-count: infinite;
@@ -113,13 +117,31 @@ export const styles = `
   }
 `;
 
-export const template = ({ show, wasFetched, data }) => {
+export const template = (state) => {
+  const {
+    show, wasFetched, data, isEmpty, error,
+  } = state;
+
   if (!show) return null;
 
   if (!wasFetched) return Placeholder;
 
+  if (error) {
+    return EmptyView.render({
+      icon: ErrorIcon,
+      message: 'Oh snap... Something went terribly wrong 😩',
+    });
+  }
+
+  if (isEmpty) {
+    return EmptyView.render({
+      icon: KiteIcon,
+      message: 'Woops... There is not data to show 😕',
+    });
+  }
+
   return `
-    <div id="AwesomeGrid">
+    <div class="AwesomeGridScope">
       ${data.map(hostApplication => `
         <div class="awesomegrid-card">
           <div class="awesomegrid-host">${hostApplication.host}</div>

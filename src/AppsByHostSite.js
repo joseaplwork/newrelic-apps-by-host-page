@@ -1,6 +1,4 @@
-// import NewRelicHostApps from 'newrelic-host-applications';
-import NewRelicHostApps from '../../NewRelicHostApplications/dist/es/NewRelicHostApps';
-import { render, updateView } from './helpers/renderer';
+import NewRelicHostApps from 'newrelic-host-applications';
 import { getRequest } from './helpers/request';
 import { setListData, jsonDataError } from './global-actions';
 import { MAX_HOST_APPS_LIMIT, JSON_DATA_URL } from './global-constants';
@@ -34,28 +32,21 @@ class AppsByHostSite {
       { awesomeListState: newAwesomeListState },
     );
 
-    this.updateViews();
+    this.renderViews();
   }
 
-  updateViews() {
+  renderViews() {
     const {
       toggleListStyleState, awesomeGridState, awesomeListState,
     } = this.store;
 
-    updateView(ToggleListStyle.component(toggleListStyleState));
-    updateView(AwesomeGrid.component(awesomeGridState));
-    updateView(AwesomeList.component(awesomeListState));
+    ToggleListStyle.render(toggleListStyleState, '#ToggleListStyleEntry');
+    AwesomeGrid.render(awesomeGridState, '#AwesomeGridEntry');
+    AwesomeList.render(awesomeListState, '#AwesomeListEntry');
   }
 
   init() {
-    const {
-      toggleListStyleState, awesomeGridState, awesomeListState,
-    } = this.store;
-
-    render(ToggleListStyle.component(toggleListStyleState));
-    render(AwesomeGrid.component(awesomeGridState));
-    render(AwesomeList.component(awesomeListState));
-
+    this.renderViews();
     const request = getRequest(JSON_DATA_URL);
 
     request
