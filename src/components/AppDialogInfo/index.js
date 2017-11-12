@@ -8,9 +8,9 @@ import { COMPONENT_NAME } from './constants';
 export default {
   render: (state, selector) => render({
     name: COMPONENT_NAME,
-    template: template(state),
-    listeners,
+    template: template(state, selector),
     selector,
+    listeners,
     styles,
   }),
   actions,

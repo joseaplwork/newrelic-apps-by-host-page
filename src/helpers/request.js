@@ -11,7 +11,6 @@ export function request(method, url) {
     }
 
     function onError() {
-      console.log('errorr', this);
       reject(new Error(this.statusText));
     }
 

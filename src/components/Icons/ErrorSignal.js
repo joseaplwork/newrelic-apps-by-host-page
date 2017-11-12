@@ -1,4 +1,4 @@
-const template = `
+const ErrorSignal = `
   <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
     <g>
       <path style="fill:#FF5A5A;" d="M394.72,234.408L293.39,57.945c-3.624-6.508-8.979-12.151-15.864-16.161
@@ -45,4 +45,4 @@ const template = `
   </svg>
 `;
 
-export default template;
+export default ErrorSignal;

@@ -1,10 +1,11 @@
 import NewRelicHostApps from 'newrelic-host-applications';
-import { getRequest } from './helpers/request';
-import { setListData, jsonDataError } from './global-actions';
-import { MAX_HOST_APPS_LIMIT, JSON_DATA_URL } from './global-constants';
-import AwesomeGrid from './components/AwesomeGrid';
-import AwesomeList from './components/AwesomeList';
-import ToggleListStyle from './components/ToggleListStyle';
+import { getRequest } from 'helpers/request';
+import { setListData, jsonDataError } from 'global-actions';
+import { MAX_HOST_APPS_LIMIT, JSON_DATA_URL } from 'global-constants';
+import AwesomeGrid from 'components/AwesomeGrid';
+import AwesomeList from 'components/AwesomeList';
+import AppDialogInfo from 'components/AppDialogInfo';
+import ToggleListStyle from 'components/ToggleListStyle';
 
 
 class AppsByHostSite {
@@ -13,23 +14,27 @@ class AppsByHostSite {
       toggleListStyleState: ToggleListStyle.initState,
       awesomeGridState: AwesomeGrid.initState,
       awesomeListState: AwesomeList.initState,
+      appDialogInfoState: AppDialogInfo.initState,
     };
   }
 
   dispatch(action) {
     const {
-      toggleListStyleState, awesomeGridState, awesomeListState,
+      toggleListStyleState, awesomeGridState,
+      appDialogInfoState, awesomeListState,
     } = this.store;
 
     const newToggleListStyleState = ToggleListStyle.reducer(toggleListStyleState, action);
     const newAwesomeGridState = AwesomeGrid.reducer(awesomeGridState, action);
     const newAwesomeListState = AwesomeList.reducer(awesomeListState, action);
+    const newAppDialogInfoState = AppDialogInfo.reducer(appDialogInfoState, action);
 
     this.store = Object.assign(
       {},
       { toggleListStyleState: newToggleListStyleState },
       { awesomeGridState: newAwesomeGridState },
       { awesomeListState: newAwesomeListState },
+      { appDialogInfoState: newAppDialogInfoState },
     );
 
     this.renderViews();
@@ -37,12 +42,14 @@ class AppsByHostSite {
 
   renderViews() {
     const {
-      toggleListStyleState, awesomeGridState, awesomeListState,
+      toggleListStyleState, awesomeGridState,
+      awesomeListState, appDialogInfoState,
     } = this.store;
 
     ToggleListStyle.render(toggleListStyleState, '#ToggleListStyleEntry');
     AwesomeGrid.render(awesomeGridState, '#AwesomeGridEntry');
     AwesomeList.render(awesomeListState, '#AwesomeListEntry');
+    AppDialogInfo.render(appDialogInfoState, '#AppDialogInfoEntry');
   }
 
   init() {

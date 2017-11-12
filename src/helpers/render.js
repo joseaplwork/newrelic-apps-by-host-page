@@ -14,11 +14,17 @@ export function _shouldRenderStyles(id, textStyles) {
 export function _updateListeners(listeners) {
   /* LISTENERS */
   if (listeners) {
-    listeners.forEach(({ target, type, callback }) => {
-      const element = document.querySelector(`[data-evt="${target}"]`);
+    listeners.forEach((listener) => {
+      const {
+        target, type, callback, state,
+      } = listener;
+      const elements = document.querySelectorAll(`[data-evt="${target}"]`);
 
-      element.removeEventListener(type, callback);
-      element.addEventListener(type, callback);
+      [].forEach.call(elements, (element) => {
+        element.removeEventListener(type, callback);
+        const finalCallback = state ? event => callback(event, state) : callback;
+        element.addEventListener(type, finalCallback);
+      });
     });
   }
 }

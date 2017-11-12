@@ -1,4 +1,4 @@
-const shape = `
+const Placeholder = `
   <div class="awesomelist-placeholder-card">
     <div class="awesomelist-placeholder-host awesomelist-animate"></div>
     <div class="awesomelist-placeholder-apps">
@@ -26,13 +26,4 @@ const shape = `
   </div>
 `;
 
-const placeholder = `
-  <div class="AwesomeListScope">
-    ${shape}
-    ${shape}
-    ${shape}
-    ${shape}
-  </div>
-`;
-
-export default placeholder;
+export default Placeholder;

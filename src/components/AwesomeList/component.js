@@ -1,8 +1,11 @@
+import AppsByHostSite from 'AppsByHostSite';
 import EmptyView from 'components/EmptyView';
 import KiteIcon from 'components/Icons/Kite';
-import ErrorIcon from 'components/Icons/Error';
+import ErrorSignalIcon from 'components/Icons/ErrorSignal';
 
 import Placeholder from './Placeholder';
+import { onClickApplication } from './actions';
+import { APP_CLICK_EVT_REF } from './constants';
 
 export const styles = `
   .AwesomeListScope {
@@ -25,6 +28,7 @@ export const styles = `
 
   .AwesomeListScope .awesomelist-app,
   .AwesomeListScope .awesomelist-placeholder-app {
+    cursor: pointer;
     margin-bottom: 20px;
     display: -ms-flexbox;
     display: flex;
@@ -93,6 +97,22 @@ export const styles = `
   }
 `;
 
+function _onClickApplication(evt, state) {
+  const target = evt.currentTarget;
+  const key = target.getAttribute('data-key');
+  const index = target.getAttribute('data-index');
+  const clickedApp = state.data[index].applications.find(app => app.$$id === parseInt(key, 10));
+
+  AppsByHostSite.dispatch(onClickApplication(clickedApp));
+}
+
+export const listeners = state => [{
+  target: APP_CLICK_EVT_REF,
+  type: 'click',
+  callback: _onClickApplication,
+  state,
+}];
+
 export const template = (state) => {
   const {
     show, wasFetched, data, isEmpty, error,
@@ -100,11 +120,17 @@ export const template = (state) => {
 
   if (!show) return null;
 
-  if (!wasFetched) return Placeholder;
+  if (!wasFetched) {
+    return `
+      <div class="AwesomeListScope">
+        ${Placeholder} ${Placeholder} ${Placeholder} ${Placeholder}
+      </div>
+    `;
+  }
 
   if (error) {
     return EmptyView.render({
-      icon: ErrorIcon,
+      icon: ErrorSignalIcon,
       message: 'Oh snap... Something went terribly wrong 😩',
     });
   }
@@ -118,12 +144,12 @@ export const template = (state) => {
 
   return `
     <div class="AwesomeListScope">
-      ${data.map(hostApplication => `
+      ${data.map((hostApplication, index) => `
         <div class="awesomelist-card">
           <div class="awesomelist-host">${hostApplication.host}</div>
           <div class="awesomelist-apps">
             ${hostApplication.applications.map(app => `
-              <div class="awesomelist-app">
+              <div class="awesomelist-app" data-evt="${APP_CLICK_EVT_REF}" data-index="${index}" data-key="${app.$$id}">
                 <div class="awesomelist-app-apdex">${app.apdex}</div>
                 <div class="awesomelist-app-name">${app.name}</div>
               </div>

@@ -1,4 +1,5 @@
 import render from 'helpers/render';
+
 import { template, styles } from './component';
 import { COMPONENT_NAME } from './constants';
 

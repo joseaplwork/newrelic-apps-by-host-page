@@ -1,4 +1,4 @@
-const template = `
+const Kite = `
   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 444.46 444.46" style="enable-background:new 0 0 444.46 444.46;" xml:space="preserve">
     <g>
       <path style="fill:#EFEFEF;" d="M142.076,150.159c-3.116-14.683-16.277-25.339-31.296-25.339c-6.001,0-11.842,1.663-16.898,4.825
@@ -40,4 +40,4 @@ const template = `
   </svg>
 `;
 
-export default template;
+export default Kite;

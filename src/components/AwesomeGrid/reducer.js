@@ -1,5 +1,5 @@
-import { globalActionTypes as gat } from '../../global-constants';
-import { actionTypes as tlsActionTypes } from '../../components/ToggleListStyle/constants';
+import { globalActionTypes as gat } from 'global-constants';
+import { actionTypes as tlsActionTypes } from 'components/ToggleListStyle/constants';
 
 export const initState = {
   show: true,

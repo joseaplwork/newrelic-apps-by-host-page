@@ -2,9 +2,10 @@
   "name": "newrelic-apps-by-host-page",
   "version": "1.0.0",
   "description": "Page view to show apps by host",
-  "main": "dist/bundle.js",
+  "main": "dist/bundle.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cross-env ENVIRONMENT=prod FORMAT=umd rollup -c",
     "build:dev": "cross-env ENVIRONMENT=dev FORMAT=umd rollup -wc"
   },
   "repository": {
@@ -29,13 +30,11 @@
     "cross-env": "5.1.1",
     "eslint-config-airbnb-base": "12.1.0",
     "eslint-plugin-import": "2.8.0",
-    "jest": "21.2.1",
     "rollup": "0.50.0",
     "rollup-plugin-babel": "3.0.2",
     "rollup-plugin-eslint": "4.0.0",
-    "rollup-plugin-includepaths": "^0.2.2",
-    "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-posthtml-template": "^1.1.0",
+    "rollup-plugin-includepaths": "0.2.2",
+    "rollup-plugin-node-resolve": "3.0.0",
     "rollup-plugin-uglify": "2.0.1"
   },
   "dependencies": {

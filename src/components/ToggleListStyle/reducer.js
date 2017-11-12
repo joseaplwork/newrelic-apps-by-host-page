@@ -1,4 +1,4 @@
-import { actionTypes as at } from '../../components/ToggleListStyle/constants';
+import { actionTypes as at } from 'components/ToggleListStyle/constants';
 
 export const initState = {
   showAsList: false,

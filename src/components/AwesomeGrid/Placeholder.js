@@ -1,4 +1,4 @@
-const shape = `
+const Placeholder = `
   <div class="awesomegrid-card">
     <div class="awesomegrid-placeholder-host awesomegrid-animate"></div>
     <div class="awesomegrid-apps">
@@ -41,13 +41,4 @@ const shape = `
   </div>
 `;
 
-const placeholder = `
-  <div class="AwesomeGridScope">
-    ${shape}
-    ${shape}
-    ${shape}
-    ${shape}
-  </div>
-`;
-
-export default placeholder;
+export default Placeholder;

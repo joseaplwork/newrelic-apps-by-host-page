@@ -1,7 +1,10 @@
+import AppsByHostSite from 'AppsByHostSite';
 import EmptyView from 'components/EmptyView';
 import KiteIcon from 'components/Icons/Kite';
-import ErrorIcon from 'components/Icons/Error';
+import ErrorSignalIcon from 'components/Icons/ErrorSignal';
 
+import { APP_CLICK_EVT_REF } from './constants';
+import { onClickApplication } from './actions';
 import Placeholder from './Placeholder';
 
 export const styles = `
@@ -32,6 +35,7 @@ export const styles = `
     display: flex;
     -ms-flex-align: start;
     align-items: flex-start;
+    cursor: pointer;
   }
 
   .AwesomeGridScope .awesomegrid-app:last-child {
@@ -91,6 +95,18 @@ export const styles = `
     width: 60%;
   }
 
+  .AwesomeGridScope .awesomegrid-animate {
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: placeholder;
+    animation-timing-function: linear;
+    background: #f1f1f1;
+    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+    background-size: 800px 104px;
+    position: relative;
+  }
+
   @media screen and (max-width: 840px) {
     .AwesomeGridScope {
       -ms-flex-align: center;
@@ -103,19 +119,23 @@ export const styles = `
       margin-left: 0;
     }
   }
-
-  .AwesomeGridScope .awesomegrid-animate {
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
-    animation-iteration-count: infinite;
-    animation-name: placeholder;
-    animation-timing-function: linear;
-    background: #f1f1f1;
-    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
-    background-size: 800px 104px;
-    position: relative;
-  }
 `;
+
+function _onClickApplication(evt, state) {
+  const target = evt.currentTarget;
+  const key = target.getAttribute('data-key');
+  const index = target.getAttribute('data-index');
+  const clickedApp = state.data[index].applications.find(app => app.$$id === parseInt(key, 10));
+
+  AppsByHostSite.dispatch(onClickApplication(clickedApp));
+}
+
+export const listeners = state => [{
+  target: APP_CLICK_EVT_REF,
+  type: 'click',
+  callback: _onClickApplication,
+  state,
+}];
 
 export const template = (state) => {
   const {
@@ -124,11 +144,17 @@ export const template = (state) => {
 
   if (!show) return null;
 
-  if (!wasFetched) return Placeholder;
+  if (!wasFetched) {
+    return `
+      <div class="AwesomeGridScope">
+        ${Placeholder} ${Placeholder} ${Placeholder} ${Placeholder}
+      </div>
+    `;
+  }
 
   if (error) {
     return EmptyView.render({
-      icon: ErrorIcon,
+      icon: ErrorSignalIcon,
       message: 'Oh snap... Something went terribly wrong 😩',
     });
   }
@@ -142,12 +168,12 @@ export const template = (state) => {
 
   return `
     <div class="AwesomeGridScope">
-      ${data.map(hostApplication => `
+      ${data.map((hostApplication, index) => `
         <div class="awesomegrid-card">
           <div class="awesomegrid-host">${hostApplication.host}</div>
           <div class="awesomegrid-apps">
             ${hostApplication.applications.map(app => `
-              <div class="awesomegrid-app">
+              <div class="awesomegrid-app" data-evt="${APP_CLICK_EVT_REF}" data-index="${index}" data-key="${app.$$id}">
                 <div class="awesomegrid-app-apdex">${app.apdex}</div>
                 <div class="awesomegrid-app-name">${app.name}</div>
               </div>
