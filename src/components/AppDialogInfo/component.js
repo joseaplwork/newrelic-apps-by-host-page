@@ -70,7 +70,7 @@ export const template = (state, selector) => {
   return `
     <div class="AppDialogInfoScope">
       <div class="dialog-wrapper">
-        versionn: ${app.version}
+        version: ${app.version}
         <div data-evt="${MODAL_CROSS_CLICK_EVT_REFERENCE}">${CloseIcon}</div>
       </div>
     </div>
