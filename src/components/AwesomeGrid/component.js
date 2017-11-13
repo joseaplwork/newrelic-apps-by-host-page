@@ -13,8 +13,8 @@ export const styles = `
 
   .AwesomeGridScope .awesomegrid-card {
     padding: 1.875rem;
-    max-width: 375px;
-    width: 100%;
+    width: 375px;
+    max-width: 100%;
     background-color: white;
     margin: 0.9375rem 0;
   }
