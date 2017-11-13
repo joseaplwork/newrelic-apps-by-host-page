@@ -39,6 +39,6 @@
   },
   "dependencies": {
     "babel-polyfill": "6.26.0",
-    "newrelic-host-applications": "1.5.0"
+    "newrelic-host-applications": "1.5.1"
   }
 }
