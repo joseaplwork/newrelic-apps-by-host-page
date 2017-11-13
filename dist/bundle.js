@@ -152,6 +152,56 @@ var createClass = function () {
   };
 }();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var toConsumableArray = function (arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+    return arr2;
+  } else {
+    return Array.from(arr);
+  }
+};
+
 (function e(t, n, r) {
   function s(o, u) {
     if (!n[o]) {
@@ -7858,7 +7908,7 @@ function render(component) {
   return selector ? renderView(component) : returnView(component);
 }
 
-var styles$1 = "\n  .EmptyViewScope {\n    margin: 100px auto;\n    width: 250px;\n    height: 340px;\n    text-align: center;\n  }\n\n  .EmptyViewScope > svg {\n    width: 100%;\n    display: inline-block;\n  }\n\n  .EmptyViewScope p {\n    font-size: 1.5rem;\n    font-weight: lighter;\n  }\n\n  .EmptyViewScope.animate {\n    animation-duration: 250ms;\n    animation-name: zoomIn;\n    animation-timing-function: cubic-bezier(.01,.01,.48,1.27);\n  }\n";
+var styles = "\n  .EmptyViewScope {\n    margin: 100px auto;\n    width: 250px;\n    height: 340px;\n    text-align: center;\n  }\n\n  .EmptyViewScope > svg {\n    width: 100%;\n    display: inline-block;\n  }\n\n  .EmptyViewScope p {\n    font-size: 1.5rem;\n    font-weight: lighter;\n  }\n\n  .EmptyViewScope.animate {\n    animation-duration: 250ms;\n    animation-name: zoomIn;\n    animation-timing-function: cubic-bezier(.01,.01,.48,1.27);\n  }\n";
 
 var template$1 = function template(_ref) {
   var icon = _ref.icon,
@@ -7874,7 +7924,7 @@ var EmptyView = {
       name: COMPONENT_NAME,
       template: template$1(state),
       selector: selector,
-      styles: styles$1
+      styles: styles
     });
   }
 };
@@ -7887,8 +7937,103 @@ var COMPONENT_NAME$1 = 'AwesomeGrid';
 
 var APP_CLICK_EVT_REF = COMPONENT_NAME$1 + '-AppItem';
 
+var Placeholder = "\n  <div class=\"awesomegrid-card\">\n    <div class=\"awesomegrid-placeholder-host awesomegrid-animate\"></div>\n    <div class=\"awesomegrid-apps\">\n      <div class=\"awesomegrid-app\">\n        <div class=\"awesomegrid-placeholder-app-apdex awesomegrid-animate\"></div>\n        <div class=\"awesomegrid-app-name\">\n          <div class=\"awesomegrid-placeholder-app-name1 awesomegrid-animate\"></div>\n          <div class=\"awesomegrid-placeholder-app-name2 awesomegrid-animate\"></div>\n        </div>\n      </div>\n      <div class=\"awesomegrid-app\">\n        <div class=\"awesomegrid-placeholder-app-apdex awesomegrid-animate\"></div>\n        <div class=\"awesomegrid-app-name\">\n          <div class=\"awesomegrid-placeholder-app-name1 awesomegrid-animate\"></div>\n          <div class=\"awesomegrid-placeholder-app-name2 awesomegrid-animate\"></div>\n        </div>\n      </div>\n      <div class=\"awesomegrid-app\">\n        <div class=\"awesomegrid-placeholder-app-apdex awesomegrid-animate\"></div>\n        <div class=\"awesomegrid-app-name\">\n          <div class=\"awesomegrid-placeholder-app-name1 awesomegrid-animate\"></div>\n          <div class=\"awesomegrid-placeholder-app-name2 awesomegrid-animate\"></div>\n        </div>\n      </div>\n      <div class=\"awesomegrid-app\">\n        <div class=\"awesomegrid-placeholder-app-apdex awesomegrid-animate\"></div>\n        <div class=\"awesomegrid-app-name\">\n          <div class=\"awesomegrid-placeholder-app-name1 awesomegrid-animate\"></div>\n          <div class=\"awesomegrid-placeholder-app-name2 awesomegrid-animate\"></div>\n        </div>\n      </div>\n      <div class=\"awesomegrid-app\">\n        <div class=\"awesomegrid-placeholder-app-apdex awesomegrid-animate\"></div>\n        <div class=\"awesomegrid-app-name\">\n          <div class=\"awesomegrid-placeholder-app-name1 awesomegrid-animate\"></div>\n          <div class=\"awesomegrid-placeholder-app-name2 awesomegrid-animate\"></div>\n        </div>\n      </div>\n    </div>\n  </div>\n";
+
+var styles$1 = '\n  .AwesomeGridScope {\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-wrap: wrap;\n    flex-wrap: wrap;\n    -ms-flex-pack: justify;\n    justify-content: space-between;\n  }\n\n  .AwesomeGridScope .awesomegrid-card {\n    padding: 1.875rem;\n    max-width: 375px;\n    width: 100%;\n    background-color: white;\n    margin: 0.9375rem 0;\n  }\n\n  .AwesomeGridScope .awesomegrid-card:nth-child(even) {\n    margin-left: 30px;\n  }\n\n  .AwesomeGridScope .awesomegrid-app {\n    margin-bottom: 1.25rem;\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-align: start;\n    align-items: flex-start;\n    cursor: pointer;\n  }\n\n  .AwesomeGridScope .awesomegrid-app:last-child {\n    margin-bottom: 0;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-host,\n  .AwesomeGridScope .awesomegrid-host {\n    margin-bottom: 1.438rem;\n    font-size: 1rem;\n    font-weight: bold;\n    line-height: 1.2;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-host {\n    background: #f1f1f1;\n    height: 15px;\n    max-width: 80%;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-app-apdex,\n  .AwesomeGridScope .awesomegrid-app-apdex {\n    color: #4a4a4a;\n    font-size: 0.8125rem;\n    line-height: 1.5;\n    display: inline-block;\n    margin-right: 1.25rem;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-app-apdex {\n    background: #f1f1f1;\n    height: 15px;\n    width: 15px;\n  }\n\n  .AwesomeGridScope .awesomegrid-app-name {\n    color: #4a4a4a;\n    font-size: 1rem;\n    line-height: 1.2;\n    -ms-flex: 1;\n    flex: 1;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-app-name1,\n  .AwesomeGridScope .awesomegrid-placeholder-app-name2 {\n    background: #f1f1f1;\n    display: inline-block;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-app-name1 {\n    height: 15px;\n    width: 90%;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-app-name2 {\n    height: 15px;\n    width: 60%;\n  }\n\n  .AwesomeGridScope .awesomegrid-animate {\n    animation-duration: 1s;\n    animation-fill-mode: forwards;\n    animation-iteration-count: infinite;\n    animation-name: placeholder;\n    animation-timing-function: linear;\n    background: #f1f1f1;\n    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);\n    background-size: 800px 104px;\n    position: relative;\n  }\n\n  @media screen and (max-width: 840px) {\n    .AwesomeGridScope {\n      -ms-flex-align: center;\n      align-items: center;\n      -ms-flex-direction: column;\n      flex-direction: column;\n    }\n\n    .AwesomeGridScope .awesomegrid-card:nth-child(even) {\n      margin-left: 0;\n    }\n  }\n';
+
+var listeners$1 = function listeners(state, props) {
+  return [{
+    target: APP_CLICK_EVT_REF,
+    type: 'click',
+    callback: props._onClickApplication,
+    state: state
+  }];
+};
+
+var template$2 = function template(state) {
+  var wasFetched = state.wasFetched,
+      data = state.data,
+      onClickApplication = state.onClickApplication;
+
+
+  if (!wasFetched) {
+    return '\n      <div class="AwesomeGridScope">\n        ' + Placeholder + ' ' + Placeholder + ' ' + Placeholder + ' ' + Placeholder + '\n      </div>\n    ';
+  }
+
+  return '\n    <div class="AwesomeGridScope">\n      ' + data.map(function (hostApplication, index) {
+    return '\n        <div class="awesomegrid-card">\n          <div class="awesomegrid-host">' + hostApplication.host + '</div>\n          <div class="awesomegrid-apps">\n            ' + hostApplication.applications.map(function (app) {
+      return '\n              <div class="awesomegrid-app" onClick="' + onClickApplication + '" data-evt="' + APP_CLICK_EVT_REF + '" data-index="' + index + '" data-key="' + app.$$id + '">\n                <div class="awesomegrid-app-apdex">' + app.apdex + '</div>\n                <div class="awesomegrid-app-name">' + app.name + '</div>\n              </div>\n            ';
+    }).join('') + '\n          </div>\n        </div>\n      ';
+  }).join('') + '\n    </div>\n  ';
+};
+
+var AwesomeGrid = {
+  render: function render$$1(state, selector) {
+    return render({
+      name: COMPONENT_NAME$1,
+      template: template$2(state),
+      selector: selector,
+      styles: styles$1
+    });
+  },
+  getListeners: function getListeners(state, props) {
+    return listeners$1(state, props);
+  }
+};
+
+var Placeholder$2 = "\n  <div class=\"awesomelist-placeholder-card\">\n    <div class=\"awesomelist-placeholder-host awesomelist-animate\"></div>\n    <div class=\"awesomelist-placeholder-apps\">\n      <div class=\"awesomelist-placeholder-app\">\n        <div class=\"awesomelist-placeholder-app-apdex awesomelist-animate\"></div>\n        <div class=\"awesomelist-placeholder-app-name awesomelist-animate\"></div>\n      </div>\n      <div class=\"awesomelist-placeholder-app\">\n        <div class=\"awesomelist-placeholder-app-apdex awesomelist-animate\"></div>\n        <div class=\"awesomelist-placeholder-app-name awesomelist-animate\"></div>\n      </div>\n      <div class=\"awesomelist-placeholder-app\">\n        <div class=\"awesomelist-placeholder-app-apdex awesomelist-animate\"></div>\n        <div class=\"awesomelist-placeholder-app-name awesomelist-animate\"></div>\n      </div>\n      <div class=\"awesomelist-placeholder-app\">\n        <div class=\"awesomelist-placeholder-app-apdex awesomelist-animate\"></div>\n        <div class=\"awesomelist-placeholder-app-name awesomelist-animate\"></div>\n      </div>\n      <div class=\"awesomelist-placeholder-app\">\n        <div class=\"awesomelist-placeholder-app-apdex awesomelist-animate\"></div>\n        <div class=\"awesomelist-placeholder-app-name awesomelist-animate\"></div>\n      </div>\n    </div>\n  </div>\n";
+
+var COMPONENT_NAME$2 = 'AwesomeList';
+
+var APP_CLICK_EVT_REF$1 = COMPONENT_NAME$2 + '-AppItem';
+
+var styles$2 = '\n  .AwesomeListScope {\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-flow: column;\n    flex-flow: column;\n  }\n\n  .AwesomeListScope .awesomelist-card,\n  .AwesomeListScope .awesomelist-placeholder-card {\n    padding: 1.875rem;\n    background-color: white;\n    margin: 0.9375rem 0;\n  }\n\n  .AwesomeListScope .awesomelist-placeholder-card {\n    min-width: 375px;\n  }\n\n  .AwesomeListScope .awesomelist-app,\n  .AwesomeListScope .awesomelist-placeholder-app {\n    cursor: pointer;\n    margin-bottom: 20px;\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-align: start;\n    align-items: flex-start;\n  }\n\n  .AwesomeListScope .awesomelist-app:last-child,\n  .AwesomeListScope .awesomelist-placeholder-app:last-child {\n    margin-bottom: 0;\n  }\n\n  .AwesomeListScope .awesomelist-host,\n  .AwesomeListScope .awesomelist-placeholder-host {\n    margin-bottom: 1.438rem;\n    font-size: 1rem;\n    font-weight: bold;\n    line-height: 1.2;\n  }\n\n  .AwesomeListScope .awesomelist-placeholder-host {\n    height: 15px;\n    background: #f1f1f1;\n    max-width: 50%;\n  }\n\n  .AwesomeListScope .awesomelist-app-apdex,\n  .AwesomeListScope .awesomelist-placeholder-app-apdex {\n    display: inline-block;\n    margin-right: 20px;\n    color: #4a4a4a;\n    font-size: 0.8125rem;\n    line-height: 1.5;\n  }\n\n  .AwesomeListScope .awesomelist-placeholder-app-apdex {\n    height: 15px;\n    width: 15px;\n    background: #f1f1f1;\n  }\n\n  .AwesomeListScope .awesomelist-app-name,\n  .AwesomeListScope .awesomelist-placeholder-app-name {\n    display: inline-block;\n    color: #4a4a4a;\n    font-size: 1rem;\n    line-height: 1.2;\n  }\n\n  .AwesomeListScope .awesomelist-placeholder-app-name {\n    height: 15px;\n    background: #f1f1f1;\n    width: 60%;\n  }\n\n  .AwesomeListScope .awesomelist-animate {\n    animation-duration: 1s;\n    animation-fill-mode: forwards;\n    animation-iteration-count: infinite;\n    animation-name: placeholder;\n    animation-timing-function: linear;\n    background: #f1f1f1;\n    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);\n    background-size: 1000px 104px;\n    position: relative;\n  }\n';
+
+var listeners$2 = function listeners(state, props) {
+  return [{
+    target: APP_CLICK_EVT_REF$1,
+    type: 'click',
+    callback: props._onClickApplication,
+    state: state
+  }];
+};
+
+var template$3 = function template(state) {
+  var wasFetched = state.wasFetched,
+      data = state.data;
+
+
+  if (!wasFetched) {
+    return '\n      <div class="AwesomeListScope">\n        ' + Placeholder$2 + ' ' + Placeholder$2 + ' ' + Placeholder$2 + ' ' + Placeholder$2 + '\n      </div>\n    ';
+  }
+
+  return '\n    <div class="AwesomeListScope">\n      ' + data.map(function (hostApplication, index) {
+    return '\n        <div class="awesomelist-card">\n          <div class="awesomelist-host">' + hostApplication.host + '</div>\n          <div class="awesomelist-apps">\n            ' + hostApplication.applications.map(function (app) {
+      return '\n              <div class="awesomelist-app" data-evt="' + APP_CLICK_EVT_REF$1 + '" data-index="' + index + '" data-key="' + app.$$id + '">\n                <div class="awesomelist-app-apdex">' + app.apdex + '</div>\n                <div class="awesomelist-app-name">' + app.name + '</div>\n              </div>\n            ';
+    }).join('') + '\n          </div>\n        </div>\n      ';
+  }).join('') + '\n    </div>\n  ';
+};
+
+var AwesomeList = {
+  render: function render$$1(state, selector) {
+    return render({
+      name: COMPONENT_NAME$2,
+      template: template$3(state),
+      selector: selector,
+      styles: styles$2
+    });
+  },
+  getListeners: function getListeners(state, props) {
+    return listeners$2(state, props);
+  }
+};
+
+var COMPONENT_NAME$3 = 'AwesomeGrid';
+
+
+
 var actionTypes = {
-  ON_CLICK_APPLICATION: COMPONENT_NAME$1 + '/ON_CLICK_APPLICATION'
+  ON_CLICK_APPLICATION: COMPONENT_NAME$3 + '/ON_CLICK_APPLICATION'
 };
 
 function onClickApplication(application) {
@@ -7902,10 +8047,6 @@ var actions = {
   onClickApplication: onClickApplication
 };
 
-var Placeholder = "\n  <div class=\"awesomegrid-card\">\n    <div class=\"awesomegrid-placeholder-host awesomegrid-animate\"></div>\n    <div class=\"awesomegrid-apps\">\n      <div class=\"awesomegrid-app\">\n        <div class=\"awesomegrid-placeholder-app-apdex awesomegrid-animate\"></div>\n        <div class=\"awesomegrid-app-name\">\n          <div class=\"awesomegrid-placeholder-app-name1 awesomegrid-animate\"></div>\n          <div class=\"awesomegrid-placeholder-app-name2 awesomegrid-animate\"></div>\n        </div>\n      </div>\n      <div class=\"awesomegrid-app\">\n        <div class=\"awesomegrid-placeholder-app-apdex awesomegrid-animate\"></div>\n        <div class=\"awesomegrid-app-name\">\n          <div class=\"awesomegrid-placeholder-app-name1 awesomegrid-animate\"></div>\n          <div class=\"awesomegrid-placeholder-app-name2 awesomegrid-animate\"></div>\n        </div>\n      </div>\n      <div class=\"awesomegrid-app\">\n        <div class=\"awesomegrid-placeholder-app-apdex awesomegrid-animate\"></div>\n        <div class=\"awesomegrid-app-name\">\n          <div class=\"awesomegrid-placeholder-app-name1 awesomegrid-animate\"></div>\n          <div class=\"awesomegrid-placeholder-app-name2 awesomegrid-animate\"></div>\n        </div>\n      </div>\n      <div class=\"awesomegrid-app\">\n        <div class=\"awesomegrid-placeholder-app-apdex awesomegrid-animate\"></div>\n        <div class=\"awesomegrid-app-name\">\n          <div class=\"awesomegrid-placeholder-app-name1 awesomegrid-animate\"></div>\n          <div class=\"awesomegrid-placeholder-app-name2 awesomegrid-animate\"></div>\n        </div>\n      </div>\n      <div class=\"awesomegrid-app\">\n        <div class=\"awesomegrid-placeholder-app-apdex awesomegrid-animate\"></div>\n        <div class=\"awesomegrid-app-name\">\n          <div class=\"awesomegrid-placeholder-app-name1 awesomegrid-animate\"></div>\n          <div class=\"awesomegrid-placeholder-app-name2 awesomegrid-animate\"></div>\n        </div>\n      </div>\n    </div>\n  </div>\n";
-
-var styles = '\n  .AwesomeGridScope {\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-wrap: wrap;\n    flex-wrap: wrap;\n    -ms-flex-pack: justify;\n    justify-content: space-between;\n  }\n\n  .AwesomeGridScope .awesomegrid-card {\n    padding: 1.875rem;\n    max-width: 375px;\n    width: 100%;\n    background-color: white;\n    margin: 0.9375rem 0;\n  }\n\n  .AwesomeGridScope .awesomegrid-card:nth-child(even) {\n    margin-left: 30px;\n  }\n\n  .AwesomeGridScope .awesomegrid-app {\n    margin-bottom: 1.25rem;\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-align: start;\n    align-items: flex-start;\n    cursor: pointer;\n  }\n\n  .AwesomeGridScope .awesomegrid-app:last-child {\n    margin-bottom: 0;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-host,\n  .AwesomeGridScope .awesomegrid-host {\n    margin-bottom: 1.438rem;\n    font-size: 1rem;\n    font-weight: bold;\n    line-height: 1.2;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-host {\n    background: #f1f1f1;\n    height: 15px;\n    max-width: 80%;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-app-apdex,\n  .AwesomeGridScope .awesomegrid-app-apdex {\n    color: #4a4a4a;\n    font-size: 0.8125rem;\n    line-height: 1.5;\n    display: inline-block;\n    margin-right: 1.25rem;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-app-apdex {\n    background: #f1f1f1;\n    height: 15px;\n    width: 15px;\n  }\n\n  .AwesomeGridScope .awesomegrid-app-name {\n    color: #4a4a4a;\n    font-size: 1rem;\n    line-height: 1.2;\n    -ms-flex: 1;\n    flex: 1;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-app-name1,\n  .AwesomeGridScope .awesomegrid-placeholder-app-name2 {\n    background: #f1f1f1;\n    display: inline-block;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-app-name1 {\n    height: 15px;\n    width: 90%;\n  }\n\n  .AwesomeGridScope .awesomegrid-placeholder-app-name2 {\n    height: 15px;\n    width: 60%;\n  }\n\n  .AwesomeGridScope .awesomegrid-animate {\n    animation-duration: 1s;\n    animation-fill-mode: forwards;\n    animation-iteration-count: infinite;\n    animation-name: placeholder;\n    animation-timing-function: linear;\n    background: #f1f1f1;\n    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);\n    background-size: 800px 104px;\n    position: relative;\n  }\n\n  @media screen and (max-width: 840px) {\n    .AwesomeGridScope {\n      -ms-flex-align: center;\n      align-items: center;\n      -ms-flex-direction: column;\n      flex-direction: column;\n    }\n\n    .AwesomeGridScope .awesomegrid-card:nth-child(even) {\n      margin-left: 0;\n    }\n  }\n';
-
 function _onClickApplication(evt, state) {
   var target = evt.currentTarget;
   var key = target.getAttribute('data-key');
@@ -7918,27 +8059,16 @@ function _onClickApplication(evt, state) {
 }
 
 var listeners = function listeners(state) {
-  return [{
-    target: APP_CLICK_EVT_REF,
-    type: 'click',
-    callback: _onClickApplication,
-    state: state
-  }];
+  return [].concat(toConsumableArray(AwesomeGrid.getListeners(state, { _onClickApplication: _onClickApplication })), toConsumableArray(AwesomeList.getListeners(state, { _onClickApplication: _onClickApplication })));
 };
 
 var template = function template(state) {
-  var show = state.show,
+  var showAsList = state.showAsList,
       wasFetched = state.wasFetched,
       data = state.data,
       isEmpty = state.isEmpty,
       error = state.error;
 
-
-  if (!show) return null;
-
-  if (!wasFetched) {
-    return '\n      <div class="AwesomeGridScope">\n        ' + Placeholder + ' ' + Placeholder + ' ' + Placeholder + ' ' + Placeholder + '\n      </div>\n    ';
-  }
 
   if (error) {
     return EmptyView.render({
@@ -7954,22 +8084,28 @@ var template = function template(state) {
     });
   }
 
-  return '\n    <div class="AwesomeGridScope">\n      ' + data.map(function (hostApplication, index) {
-    return '\n        <div class="awesomegrid-card">\n          <div class="awesomegrid-host">' + hostApplication.host + '</div>\n          <div class="awesomegrid-apps">\n            ' + hostApplication.applications.map(function (app) {
-      return '\n              <div class="awesomegrid-app" data-evt="' + APP_CLICK_EVT_REF + '" data-index="' + index + '" data-key="' + app.$$id + '">\n                <div class="awesomegrid-app-apdex">' + app.apdex + '</div>\n                <div class="awesomegrid-app-name">' + app.name + '</div>\n              </div>\n            ';
-    }).join('') + '\n          </div>\n        </div>\n      ';
-  }).join('') + '\n    </div>\n  ';
+  if (showAsList) {
+    return AwesomeList.render({
+      wasFetched: wasFetched,
+      data: data
+    });
+  }
+
+  return AwesomeGrid.render({
+    wasFetched: wasFetched,
+    data: data
+  });
 };
 
-var COMPONENT_NAME$2 = 'ToggleListStyle';
-var INPUT_EVT_REF = COMPONENT_NAME$2 + '-ToggleListInput';
+var COMPONENT_NAME$4 = 'ToggleListStyle';
+var INPUT_EVT_REF = COMPONENT_NAME$4 + '-ToggleListInput';
 
 var actionTypes$1 = {
-  TOGGLE_STYLE: COMPONENT_NAME$2 + '/TOGGLE_STYLE'
+  TOGGLE_STYLE: COMPONENT_NAME$4 + '/TOGGLE_STYLE'
 };
 
 var initState = {
-  show: true,
+  showAsList: false,
   wasFetched: false,
   data: [],
   isEmpty: false,
@@ -8006,21 +8142,20 @@ var reducer = function () {
       });
     case actionTypes$1.TOGGLE_STYLE:
       return Object.assign({}, state, {
-        show: !payload.isSelected
+        showAsList: payload.isSelected
       });
     default:
       return state;
   }
 };
 
-var AwesomeGrid = {
+var AppsList = {
   render: function render$$1(state, selector) {
     return render({
-      name: COMPONENT_NAME$1,
+      name: COMPONENT_NAME$3,
       template: template(state),
       listeners: listeners(state),
-      selector: selector,
-      styles: styles
+      selector: selector
     });
   },
   actions: actions,
@@ -8028,161 +8163,23 @@ var AwesomeGrid = {
   initState: initState
 };
 
-var Placeholder$2 = "\n  <div class=\"awesomelist-placeholder-card\">\n    <div class=\"awesomelist-placeholder-host awesomelist-animate\"></div>\n    <div class=\"awesomelist-placeholder-apps\">\n      <div class=\"awesomelist-placeholder-app\">\n        <div class=\"awesomelist-placeholder-app-apdex awesomelist-animate\"></div>\n        <div class=\"awesomelist-placeholder-app-name awesomelist-animate\"></div>\n      </div>\n      <div class=\"awesomelist-placeholder-app\">\n        <div class=\"awesomelist-placeholder-app-apdex awesomelist-animate\"></div>\n        <div class=\"awesomelist-placeholder-app-name awesomelist-animate\"></div>\n      </div>\n      <div class=\"awesomelist-placeholder-app\">\n        <div class=\"awesomelist-placeholder-app-apdex awesomelist-animate\"></div>\n        <div class=\"awesomelist-placeholder-app-name awesomelist-animate\"></div>\n      </div>\n      <div class=\"awesomelist-placeholder-app\">\n        <div class=\"awesomelist-placeholder-app-apdex awesomelist-animate\"></div>\n        <div class=\"awesomelist-placeholder-app-name awesomelist-animate\"></div>\n      </div>\n      <div class=\"awesomelist-placeholder-app\">\n        <div class=\"awesomelist-placeholder-app-apdex awesomelist-animate\"></div>\n        <div class=\"awesomelist-placeholder-app-name awesomelist-animate\"></div>\n      </div>\n    </div>\n  </div>\n";
-
-var COMPONENT_NAME$3 = 'AwesomeList';
-
-var APP_CLICK_EVT_REF$1 = COMPONENT_NAME$3 + '-AppItem';
-
-var actionTypes$2 = {
-  ON_CLICK_APPLICATION: COMPONENT_NAME$3 + '/ON_CLICK_APPLICATION'
-};
-
-function onClickApplication$1(application) {
-  return {
-    type: actionTypes$2.ON_CLICK_APPLICATION,
-    payload: { application: application }
-  };
-}
-
-var actions$1 = {
-  onClickApplication: onClickApplication$1
-};
-
-var styles$2 = '\n  .AwesomeListScope {\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-flow: column;\n    flex-flow: column;\n  }\n\n  .AwesomeListScope .awesomelist-card,\n  .AwesomeListScope .awesomelist-placeholder-card {\n    padding: 1.875rem;\n    background-color: white;\n    margin: 0.9375rem 0;\n  }\n\n  .AwesomeListScope .awesomelist-placeholder-card {\n    min-width: 375px;\n  }\n\n  .AwesomeListScope .awesomelist-app,\n  .AwesomeListScope .awesomelist-placeholder-app {\n    cursor: pointer;\n    margin-bottom: 20px;\n    display: -ms-flexbox;\n    display: flex;\n    -ms-flex-align: start;\n    align-items: flex-start;\n  }\n\n  .AwesomeListScope .awesomelist-app:last-child,\n  .AwesomeListScope .awesomelist-placeholder-app:last-child {\n    margin-bottom: 0;\n  }\n\n  .AwesomeListScope .awesomelist-host,\n  .AwesomeListScope .awesomelist-placeholder-host {\n    margin-bottom: 1.438rem;\n    font-size: 1rem;\n    font-weight: bold;\n    line-height: 1.2;\n  }\n\n  .AwesomeListScope .awesomelist-placeholder-host {\n    height: 15px;\n    background: #f1f1f1;\n    max-width: 50%;\n  }\n\n  .AwesomeListScope .awesomelist-app-apdex,\n  .AwesomeListScope .awesomelist-placeholder-app-apdex {\n    display: inline-block;\n    margin-right: 20px;\n    color: #4a4a4a;\n    font-size: 0.8125rem;\n    line-height: 1.5;\n  }\n\n  .AwesomeListScope .awesomelist-placeholder-app-apdex {\n    height: 15px;\n    width: 15px;\n    background: #f1f1f1;\n  }\n\n  .AwesomeListScope .awesomelist-app-name,\n  .AwesomeListScope .awesomelist-placeholder-app-name {\n    display: inline-block;\n    color: #4a4a4a;\n    font-size: 1rem;\n    line-height: 1.2;\n  }\n\n  .AwesomeListScope .awesomelist-placeholder-app-name {\n    height: 15px;\n    background: #f1f1f1;\n    width: 60%;\n  }\n\n  .AwesomeListScope .awesomelist-animate {\n    animation-duration: 1s;\n    animation-fill-mode: forwards;\n    animation-iteration-count: infinite;\n    animation-name: placeholder;\n    animation-timing-function: linear;\n    background: #f1f1f1;\n    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);\n    background-size: 1000px 104px;\n    position: relative;\n  }\n';
-
-function _onClickApplication$1(evt, state) {
-  var target = evt.currentTarget;
-  var key = target.getAttribute('data-key');
-  var index = target.getAttribute('data-index');
-  var clickedApp = state.data[index].applications.find(function (app) {
-    return app.$$id === parseInt(key, 10);
-  });
-
-  AppsByHostSite$1.dispatch(onClickApplication$1(clickedApp));
-}
-
-var listeners$1 = function listeners(state) {
-  return [{
-    target: APP_CLICK_EVT_REF$1,
-    type: 'click',
-    callback: _onClickApplication$1,
-    state: state
-  }];
-};
-
-var template$2 = function template(state) {
-  var show = state.show,
-      wasFetched = state.wasFetched,
-      data = state.data,
-      isEmpty = state.isEmpty,
-      error = state.error;
-
-
-  if (!show) return null;
-
-  if (!wasFetched) {
-    return '\n      <div class="AwesomeListScope">\n        ' + Placeholder$2 + ' ' + Placeholder$2 + ' ' + Placeholder$2 + ' ' + Placeholder$2 + '\n      </div>\n    ';
-  }
-
-  if (error) {
-    return EmptyView.render({
-      icon: ErrorSignal,
-      message: 'Oh snap... Something went terribly wrong 😩'
-    });
-  }
-
-  if (isEmpty) {
-    return EmptyView.render({
-      icon: Kite,
-      message: 'Woops... There is not data to show 😕'
-    });
-  }
-
-  return '\n    <div class="AwesomeListScope">\n      ' + data.map(function (hostApplication, index) {
-    return '\n        <div class="awesomelist-card">\n          <div class="awesomelist-host">' + hostApplication.host + '</div>\n          <div class="awesomelist-apps">\n            ' + hostApplication.applications.map(function (app) {
-      return '\n              <div class="awesomelist-app" data-evt="' + APP_CLICK_EVT_REF$1 + '" data-index="' + index + '" data-key="' + app.$$id + '">\n                <div class="awesomelist-app-apdex">' + app.apdex + '</div>\n                <div class="awesomelist-app-name">' + app.name + '</div>\n              </div>\n            ';
-    }).join('') + '\n          </div>\n        </div>\n      ';
-  }).join('') + '\n    </div>\n  ';
-};
-
-var initState$1 = {
-  show: false,
-  wasFetched: false,
-  data: [],
-  isEmpty: false,
-  error: null
-};
-
-var reducer$1 = function () {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initState$1;
-  var action = arguments[1];
-  var type = action.type,
-      payload = action.payload,
-      error = action.error;
-
-
-  switch (type) {
-    case globalActionTypes.SET_LIST_DATA:
-      {
-        var _payload$data = payload.data,
-            data = _payload$data === undefined ? [] : _payload$data;
-
-
-        return Object.assign({}, state, {
-          wasFetched: true,
-          isEmpty: !data.length,
-          data: data,
-          error: null
-        });
-      }
-    case globalActionTypes.GET_JSON_DATA_ERROR:
-      return Object.assign({}, state, {
-        wasFetched: true,
-        data: [],
-        error: !!error
-      });
-    case actionTypes$1.TOGGLE_STYLE:
-      return Object.assign({}, state, {
-        show: payload.isSelected
-      });
-    default:
-      return state;
-  }
-};
-
-var AwesomeList = {
-  render: function render$$1(state, selector) {
-    return render({
-      name: COMPONENT_NAME$3,
-      template: template$2(state),
-      listeners: listeners$1(state),
-      selector: selector,
-      styles: styles$2
-    });
-  },
-  actions: actions$1,
-  reducer: reducer$1,
-  initState: initState$1
-};
-
 var Close = "\n  <svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 50 50\" style=\"enable-background:new 0 0 50 50;\" xml:space=\"preserve\">\n    <circle style=\"fill:#D75A4A;\" cx=\"25\" cy=\"25\" r=\"25\"/>\n    <polyline style=\"fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;\" points=\"16,34 25,25 34,16 \"/>\n    <polyline style=\"fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;\" points=\"16,16 25,25 34,34 \"/>\n  </svg>\n";
 
-var COMPONENT_NAME$4 = 'AppDialogInfo';
+var COMPONENT_NAME$5 = 'AppDialogInfo';
 
-var MODAL_CROSS_CLICK_EVT_REFERENCE = COMPONENT_NAME$4 + '-ModalClose';
+var MODAL_CROSS_CLICK_EVT_REFERENCE = COMPONENT_NAME$5 + '-ModalClose';
 
-var actionTypes$3 = {
-  ON_CLOSE_MODAL: COMPONENT_NAME$4 + '/ON_CLOSE_MODAL'
+var actionTypes$2 = {
+  ON_CLOSE_MODAL: COMPONENT_NAME$5 + '/ON_CLOSE_MODAL'
 };
 
 function onCloseModal() {
   return {
-    type: actionTypes$3.ON_CLOSE_MODAL
+    type: actionTypes$2.ON_CLOSE_MODAL
   };
 }
 
-var actions$2 = {
+var actions$1 = {
   onCloseModal: onCloseModal
 };
 
@@ -8192,13 +8189,13 @@ function _onCloseModal() {
   AppsByHostSite$1.dispatch(onCloseModal());
 }
 
-var listeners$2 = [{
+var listeners$3 = [{
   target: MODAL_CROSS_CLICK_EVT_REFERENCE,
   type: 'click',
   callback: _onCloseModal
 }];
 
-var template$3 = function template(state, selector) {
+var template$4 = function template(state, selector) {
   var entry = document.querySelector(selector);
   var show = state.show,
       app = state.app;
@@ -8214,20 +8211,19 @@ var template$3 = function template(state, selector) {
   return '\n    <div class="AppDialogInfoScope">\n      <div class="dialog-wrapper">\n        versionn: ' + app.version + '\n        <div data-evt="' + MODAL_CROSS_CLICK_EVT_REFERENCE + '">' + Close + '</div>\n      </div>\n    </div>\n  ';
 };
 
-var initState$2 = {
+var initState$1 = {
   show: false,
   app: null
 };
 
-var reducer$2 = function () {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initState$2;
+var reducer$1 = function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initState$1;
   var action = arguments[1];
   var type = action.type,
       payload = action.payload;
 
 
   switch (type) {
-    case actionTypes$2.ON_CLICK_APPLICATION:
     case actionTypes.ON_CLICK_APPLICATION:
       {
         var application = payload.application;
@@ -8238,7 +8234,7 @@ var reducer$2 = function () {
           app: application
         });
       }
-    case actionTypes$3.ON_CLOSE_MODAL:
+    case actionTypes$2.ON_CLOSE_MODAL:
       {
         return Object.assign({}, state, {
           show: false,
@@ -8253,16 +8249,16 @@ var reducer$2 = function () {
 var AppDialogInfo = {
   render: function render$$1(state, selector) {
     return render({
-      name: COMPONENT_NAME$4,
-      template: template$3(state, selector),
+      name: COMPONENT_NAME$5,
+      template: template$4(state, selector),
       selector: selector,
-      listeners: listeners$2,
+      listeners: listeners$3,
       styles: styles$3
     });
   },
-  actions: actions$2,
-  reducer: reducer$2,
-  initState: initState$2
+  actions: actions$1,
+  reducer: reducer$1,
+  initState: initState$1
 };
 
 function toggleStyle(isSelected) {
@@ -8272,7 +8268,7 @@ function toggleStyle(isSelected) {
   };
 }
 
-var actions$3 = {
+var actions$2 = {
   toggleStyle: toggleStyle
 };
 
@@ -8284,23 +8280,23 @@ function onChange(evt) {
   AppsByHostSite$1.dispatch(toggleStyle(element.checked));
 }
 
-var listeners$3 = [{
+var listeners$4 = [{
   target: INPUT_EVT_REF,
   type: 'change',
   callback: onChange
 }];
 
-var template$4 = function template(_ref) {
+var template$5 = function template(_ref) {
   var showAsList = _ref.showAsList;
   return '\n  <div class="ToggleListStyleScope">\n    <p class="inputToggleList">\n      <input id="inputToggleListRef" ' + (showAsList && 'checked' || '') + ' data-evt="' + INPUT_EVT_REF + '" type="checkbox">\n      <i></i>\n    </p>\n    <label for="inputToggleListRef">' + (showAsList ? 'Show as an awesome grid' : 'Show as list') + '</label>\n  </div>\n';
 };
 
-var initState$3 = {
+var initState$2 = {
   showAsList: false
 };
 
-var reducer$3 = function () {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initState$3;
+var reducer$2 = function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initState$2;
   var action = arguments[1];
   var type = action.type,
       payload = action.payload;
@@ -8323,16 +8319,16 @@ var reducer$3 = function () {
 var ToggleListStyle = {
   render: function render$$1(state, selector) {
     return render({
-      name: COMPONENT_NAME$2,
-      template: template$4(state),
-      listeners: listeners$3,
+      name: COMPONENT_NAME$4,
+      template: template$5(state),
+      listeners: listeners$4,
       selector: selector,
       styles: styles$4
     });
   },
-  actions: actions$3,
-  reducer: reducer$3,
-  initState: initState$3
+  actions: actions$2,
+  reducer: reducer$2,
+  initState: initState$2
 };
 
 var AppsByHostSite = function () {
@@ -8341,8 +8337,7 @@ var AppsByHostSite = function () {
 
     this.store = {
       toggleListStyleState: ToggleListStyle.initState,
-      awesomeGridState: AwesomeGrid.initState,
-      awesomeListState: AwesomeList.initState,
+      appsListState: AppsList.initState,
       appDialogInfoState: AppDialogInfo.initState
     };
   }
@@ -8352,17 +8347,15 @@ var AppsByHostSite = function () {
     value: function dispatch(action) {
       var _store = this.store,
           toggleListStyleState = _store.toggleListStyleState,
-          awesomeGridState = _store.awesomeGridState,
-          appDialogInfoState = _store.appDialogInfoState,
-          awesomeListState = _store.awesomeListState;
+          appsListState = _store.appsListState,
+          appDialogInfoState = _store.appDialogInfoState;
 
 
       var newToggleListStyleState = ToggleListStyle.reducer(toggleListStyleState, action);
-      var newAwesomeGridState = AwesomeGrid.reducer(awesomeGridState, action);
-      var newAwesomeListState = AwesomeList.reducer(awesomeListState, action);
+      var newAppsListState = AppsList.reducer(appsListState, action);
       var newAppDialogInfoState = AppDialogInfo.reducer(appDialogInfoState, action);
 
-      this.store = Object.assign({}, { toggleListStyleState: newToggleListStyleState }, { awesomeGridState: newAwesomeGridState }, { awesomeListState: newAwesomeListState }, { appDialogInfoState: newAppDialogInfoState });
+      this.store = Object.assign({}, { toggleListStyleState: newToggleListStyleState }, { appsListState: newAppsListState }, { appDialogInfoState: newAppDialogInfoState });
 
       this.renderViews();
     }
@@ -8371,14 +8364,12 @@ var AppsByHostSite = function () {
     value: function renderViews() {
       var _store2 = this.store,
           toggleListStyleState = _store2.toggleListStyleState,
-          awesomeGridState = _store2.awesomeGridState,
-          awesomeListState = _store2.awesomeListState,
+          appsListState = _store2.appsListState,
           appDialogInfoState = _store2.appDialogInfoState;
 
 
       ToggleListStyle.render(toggleListStyleState, '#ToggleListStyleEntry');
-      AwesomeGrid.render(awesomeGridState, '#AwesomeGridEntry');
-      AwesomeList.render(awesomeListState, '#AwesomeListEntry');
+      AppsList.render(appsListState, '#AppsListEntry');
       AppDialogInfo.render(appDialogInfoState, '#AppDialogInfoEntry');
     }
   }, {

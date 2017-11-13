@@ -1,10 +1,4 @@
-import AppsByHostSite from 'AppsByHostSite';
-import EmptyView from 'components/EmptyView';
-import KiteIcon from 'components/Icons/Kite';
-import ErrorSignalIcon from 'components/Icons/ErrorSignal';
-
 import { APP_CLICK_EVT_REF } from './constants';
-import { onClickApplication } from './actions';
 import Placeholder from './Placeholder';
 
 export const styles = `
@@ -121,28 +115,17 @@ export const styles = `
   }
 `;
 
-function _onClickApplication(evt, state) {
-  const target = evt.currentTarget;
-  const key = target.getAttribute('data-key');
-  const index = target.getAttribute('data-index');
-  const clickedApp = state.data[index].applications.find(app => app.$$id === parseInt(key, 10));
-
-  AppsByHostSite.dispatch(onClickApplication(clickedApp));
-}
-
-export const listeners = state => [{
+export const listeners = (state, props) => [{
   target: APP_CLICK_EVT_REF,
   type: 'click',
-  callback: _onClickApplication,
+  callback: props._onClickApplication,
   state,
 }];
 
 export const template = (state) => {
   const {
-    show, wasFetched, data, isEmpty, error,
+    wasFetched, data, onClickApplication,
   } = state;
-
-  if (!show) return null;
 
   if (!wasFetched) {
     return `
@@ -152,20 +135,6 @@ export const template = (state) => {
     `;
   }
 
-  if (error) {
-    return EmptyView.render({
-      icon: ErrorSignalIcon,
-      message: 'Oh snap... Something went terribly wrong 😩',
-    });
-  }
-
-  if (isEmpty) {
-    return EmptyView.render({
-      icon: KiteIcon,
-      message: 'Woops... There is not data to show 😕',
-    });
-  }
-
   return `
     <div class="AwesomeGridScope">
       ${data.map((hostApplication, index) => `
@@ -173,7 +142,7 @@ export const template = (state) => {
           <div class="awesomegrid-host">${hostApplication.host}</div>
           <div class="awesomegrid-apps">
             ${hostApplication.applications.map(app => `
-              <div class="awesomegrid-app" data-evt="${APP_CLICK_EVT_REF}" data-index="${index}" data-key="${app.$$id}">
+              <div class="awesomegrid-app" onClick="${onClickApplication}" data-evt="${APP_CLICK_EVT_REF}" data-index="${index}" data-key="${app.$$id}">
                 <div class="awesomegrid-app-apdex">${app.apdex}</div>
                 <div class="awesomegrid-app-name">${app.name}</div>
               </div>

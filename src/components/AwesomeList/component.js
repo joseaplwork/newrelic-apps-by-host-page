@@ -1,10 +1,4 @@
-import AppsByHostSite from 'AppsByHostSite';
-import EmptyView from 'components/EmptyView';
-import KiteIcon from 'components/Icons/Kite';
-import ErrorSignalIcon from 'components/Icons/ErrorSignal';
-
 import Placeholder from './Placeholder';
-import { onClickApplication } from './actions';
 import { APP_CLICK_EVT_REF } from './constants';
 
 export const styles = `
@@ -97,28 +91,17 @@ export const styles = `
   }
 `;
 
-function _onClickApplication(evt, state) {
-  const target = evt.currentTarget;
-  const key = target.getAttribute('data-key');
-  const index = target.getAttribute('data-index');
-  const clickedApp = state.data[index].applications.find(app => app.$$id === parseInt(key, 10));
-
-  AppsByHostSite.dispatch(onClickApplication(clickedApp));
-}
-
-export const listeners = state => [{
+export const listeners = (state, props) => [{
   target: APP_CLICK_EVT_REF,
   type: 'click',
-  callback: _onClickApplication,
+  callback: props._onClickApplication,
   state,
 }];
 
 export const template = (state) => {
   const {
-    show, wasFetched, data, isEmpty, error,
+    wasFetched, data,
   } = state;
-
-  if (!show) return null;
 
   if (!wasFetched) {
     return `
@@ -126,20 +109,6 @@ export const template = (state) => {
         ${Placeholder} ${Placeholder} ${Placeholder} ${Placeholder}
       </div>
     `;
-  }
-
-  if (error) {
-    return EmptyView.render({
-      icon: ErrorSignalIcon,
-      message: 'Oh snap... Something went terribly wrong 😩',
-    });
-  }
-
-  if (isEmpty) {
-    return EmptyView.render({
-      icon: KiteIcon,
-      message: 'Woops... There is not data to show 😕',
-    });
   }
 
   return `

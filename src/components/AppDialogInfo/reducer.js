@@ -1,5 +1,4 @@
-import { actionTypes as awesomeGridAt } from 'components/AwesomeGrid/constants';
-import { actionTypes as awesomeListAt } from 'components/AwesomeList/constants';
+import { actionTypes as appsListAt } from 'components/AppsList/constants';
 import { actionTypes as at } from './constants';
 
 export const initState = {
@@ -11,8 +10,7 @@ export default function (state = initState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case awesomeListAt.ON_CLICK_APPLICATION:
-    case awesomeGridAt.ON_CLICK_APPLICATION: {
+    case appsListAt.ON_CLICK_APPLICATION: {
       const { application } = payload;
 
       return Object.assign({}, state, {

@@ -2,7 +2,7 @@ import { globalActionTypes as gat } from 'global-constants';
 import { actionTypes as tlsActionTypes } from 'components/ToggleListStyle/constants';
 
 export const initState = {
-  show: false,
+  showAsList: false,
   wasFetched: false,
   data: [],
   isEmpty: false,
@@ -31,7 +31,7 @@ export default function (state = initState, action) {
       });
     case tlsActionTypes.TOGGLE_STYLE:
       return Object.assign({}, state, {
-        show: payload.isSelected,
+        showAsList: payload.isSelected,
       });
     default:
       return state;
