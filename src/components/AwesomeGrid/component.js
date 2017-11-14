@@ -124,7 +124,7 @@ export const listeners = (state, props) => [{
 
 export const template = (state) => {
   const {
-    wasFetched, data, onClickApplication,
+    wasFetched, data,
   } = state;
 
   if (!wasFetched) {
@@ -142,7 +142,7 @@ export const template = (state) => {
           <div class="awesomegrid-host">${hostApplication.host}</div>
           <div class="awesomegrid-apps">
             ${hostApplication.applications.map(app => `
-              <div class="awesomegrid-app" onClick="${onClickApplication}" data-evt="${APP_CLICK_EVT_REF}" data-index="${index}" data-key="${app.$$id}">
+              <div class="awesomegrid-app" data-evt="${APP_CLICK_EVT_REF}" data-index="${index}" data-key="${app.$$id}">
                 <div class="awesomegrid-app-apdex">${app.apdex}</div>
                 <div class="awesomegrid-app-name">${app.name}</div>
               </div>
